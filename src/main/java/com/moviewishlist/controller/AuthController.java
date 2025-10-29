@@ -33,13 +33,13 @@ public class AuthController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
-        if (userService.login(username, password)) {
-            return "redirect:/"; // go to home page
-        } else {
-            model.addAttribute("error", "Invalid username or password!");
-            return "login";
-        }
-    }
+//    @PostMapping("/login")
+//    public String login(@RequestParam String username, @RequestParam String password, Model model) {
+//        if (userService.login(username, password)) {
+//            return "redirect:/"; // go to home page
+//        } else {
+//            model.addAttribute("error", "Invalid username or password!");
+//            return "login";
+//        }
+//    }
 }

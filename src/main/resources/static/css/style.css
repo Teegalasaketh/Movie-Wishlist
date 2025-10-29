@@ -495,3 +495,67 @@ body.dark-mode .card-text.text-muted {
 }
 body.dark-mode #theme-toggle .bi-sun-fill { display: inline-block; }
 body.dark-mode #theme-toggle .bi-moon-fill { display: none; }
+/* ==========================================
+   🧠 Auth Pages Styling (Login & Signup)
+   ========================================== */
+
+/* Auth card container */
+.auth-card {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 2rem;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+/* Labels */
+.auth-card .form-label {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* Input fields */
+.auth-card .form-control {
+    background-color: var(--form-bg);
+    border: 1px solid var(--border-color);
+    color: var(--form-text);
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.auth-card .form-control::placeholder {
+    color: rgba(200, 200, 200, 0.7);
+}
+
+.auth-card .form-control:focus {
+    background-color: var(--form-bg);
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 0.2rem var(--glow-color);
+    color: var(--form-text);
+}
+
+/* Buttons */
+.auth-card .btn-brand {
+    background-color: var(--brand-color);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.auth-card .btn-brand:hover {
+    background-color: var(--brand-hover);
+}
+
+/* Links */
+.auth-card a {
+    color: var(--brand-color);
+    text-decoration: none;
+}
+
+.auth-card a:hover {
+    text-decoration: underline;
+}
