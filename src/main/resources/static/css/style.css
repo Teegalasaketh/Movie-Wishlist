@@ -1,0 +1,497 @@
+/* src/main/resources/static/css/style.css */
+
+/* Define color palettes using CSS variables */
+:root {
+    --bg-color: #f4f4f9;
+    --text-color: #121212;
+    --navbar-bg: rgba(255, 255, 255, 0.85);
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --brand-color: #E50914;
+    --brand-hover: #c40812;
+    --form-bg: #e9ecef;
+    --form-text: #121212;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --glow-color: rgba(229, 9, 20, 0.2);
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --navbar-bg: rgba(20, 20, 20, 0.85);
+    --card-bg: #1e1e1e;
+    --border-color: #333;
+    --brand-color: #E50914;
+    --brand-hover: #c40812;
+    --form-bg: #333;
+    --form-text: #fff;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --glow-color: rgba(229, 9, 20, 0.3);
+}
+
+/* General Body Styles */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Navbar Customization */
+.navbar {
+    background-color: transparent; /* Start fully transparent */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent; /* Start with a transparent border */
+    transition: background-color 0.4s ease, border-color 0.4s ease; /* Smooth transition */
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+
+/* This class will be added via JavaScript when you scroll */
+.navbar.scrolled {
+    background-color: var(--navbar-bg); /* Use the semi-transparent color from your theme */
+    border-bottom: 1px solid var(--border-color); /* Add the bottom border back */
+}
+
+.navbar-brand {
+    color: var(--brand-color) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Main Container */
+.container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* Movie Card Styling */
+.movie-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px var(--glow-color);
+}
+
+/* New container for the poster with a blurred background effect */
+.poster-container {
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* This is crucial for the blur effect */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* We use a pseudo-element to create the blurred layer */
+.poster-container::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px;
+    background: inherit; /* Inherits the background-image from the container */
+    filter: blur(25px) brightness(0.6); /* The blur and a slight dimming */
+    z-index: 1;
+}
+
+/* This is the sharp, main image that sits on top */
+.poster-container img {
+    position: relative; /* Sits on top of the blurred pseudo-element */
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensures the whole poster is visible */
+}
+
+.movie-card .card-body {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 0.3s;
+}
+
+.movie-card .card-title {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Form & Search Input */
+.input-group {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Apply the "pop" effect when the mouse hovers over the form */
+.input-group:hover { /* <-- CHANGED FROM :focus-within */
+    transform: scale(1.02); /* Makes the form slightly larger */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Adds a soft shadow */
+}
+
+/* Dark mode shadow for the pop effect on hover */
+body.dark-mode .input-group:hover { /* <-- CHANGED FROM :focus-within */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* General style for the search input */
+.form-control {
+    background-color: var(--form-bg);
+    border: 1px solid var(--border-color);
+    color: var(--form-text);
+}
+
+/* Neutral focus style (for when you click inside) */
+.form-control:focus {
+    background-color: var(--form-bg);
+    color: var(--form-text);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+/* Button Styles */
+/* --- Gradient TEXT Button Styling --- */
+.btn-brand {
+    /* Use variables for the light mode gradient (Red to Black) */
+    --btn-grad-1: #E50914;
+    --btn-grad-2: #444;
+    --btn-grad-3: #000;
+
+    /* Make the button's background transparent and add a border */
+    background-color: transparent;
+    border: 2px solid #ccc;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    /* Apply the linear gradient to the TEXT itself */
+    background-image: linear-gradient(90deg, var(--btn-grad-1) 0%, var(--btn-grad-2) 50%, var(--btn-grad-3) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent; /* Hide original text color */
+}
+
+/* On hover, add a subtle background tint */
+.btn-brand:hover {
+    background-color: rgba(128, 128, 128, 0.08);
+    border-color: #999;
+}
+.text-brand {
+  color: var(--brand-color, #ff5c5c);
+}
+/* --- DARK MODE OVERRIDE for the button text --- */
+body.dark-mode .btn-brand {
+    /* New gradient colors for dark mode (Dark Red to White) */
+    --btn-grad-1: #A11620;
+    --btn-grad-2: #ccc;
+    --btn-grad-3: #fff;
+    border-color: #555; /* Darker border for dark mode */
+}
+
+/* Dark mode hover effect */
+body.dark-mode .btn-brand:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #888;
+}
+/* src/main/resources/static/css/style.css */
+
+/* --- Add this to the end of your file --- */
+
+/* Placeholder for missing movie posters */
+/* Placeholder for missing movie posters (Shimmer Effect) */
+.img-not-found {
+    height: 350px; /* Match the .card-img-top height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-weight: 600;
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+    position: relative;
+    overflow: hidden;
+    will-change: transform, opacity, background-position;
+    background: #222; /* Fallback background for the container */
+
+    /* Entrance + shimmer animations */
+    animation: slideUpFade 700ms cubic-bezier(.2,.9,.3,1) both,
+               shimmer 2200ms linear 800ms infinite;
+
+    /* Gradient text setup */
+    background-image: linear-gradient(
+        90deg,
+        rgba(100,100,100,0.95) 0%,
+        rgba(255,255,255,0.5) 45%,
+        rgba(100,100,100,0.95) 55%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent; /* Safari */
+    color: transparent; /* Hides the original text color */
+}
+
+/* Keyframes: slide up + fade in */
+@keyframes slideUpFade {
+  0%   { transform: translateY(10px) scale(0.98); opacity: 0; }
+  60%  { transform: translateY(-4px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Keyframes: shimmer across the text */
+@keyframes shimmer {
+  0%   { background-position: -120% 0; }
+  100% { background-position: 120% 0; }
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .img-not-found {
+    animation: none;
+    -webkit-animation: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+/* Centering container */
+/* Centering container */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Adjust padding to control the top and bottom space */
+    padding: 4rem 1rem;
+    box-sizing: border-box;
+    text-align: center;
+    background: transparent;
+}
+
+/* Variables + animated heading (responsive, professional) */
+/* Variables + animated heading (responsive, professional) */
+.animated-heading {
+    --ah-duration: 720ms;
+    --ah-ease: cubic-bezier(.2,.9,.3,1);
+
+    /* --- LIGHT MODE COLORS --- */
+    --ah-color-fallback: #000;
+    --ah-grad-1: #C11B27; /* Red */
+    --ah-grad-2: #444;    /* Mid-grey for a smoother transition */
+    --ah-grad-3: #000;    /* Black */
+    --ah-underline-color: rgba(193, 27, 39, 0.9); /* Semi-transparent Red */
+
+    display: inline-block;
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-size: clamp(1.4rem, 4.5vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    max-width: min(90ch, 95%);
+    position: relative;
+    color: var(--ah-color-fallback);
+    will-change: transform, opacity, background-position;
+    animation:
+        ah-slideFade var(--ah-duration) var(--ah-ease) both,
+        ah-shimmer 2200ms linear 240ms infinite;
+    background: linear-gradient(90deg, var(--ah-grad-1) 0%, var(--ah-grad-2) 50%, var(--ah-grad-3) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 220% 100%;
+}
+
+/* --- DARK MODE OVERRIDE --- */
+body.dark-mode .animated-heading {
+    --ah-color-fallback: #fff;
+    --ah-grad-1: #A11620; /* Dark Red */
+    --ah-grad-2: #ccc;    /* Light grey for a smoother transition */
+    --ah-grad-3: #fff;    /* White */
+    --ah-underline-color: rgba(224, 224, 224, 0.9); /* Semi-transparent White */
+}
+
+/* professional underline reveal */
+.animated-heading::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  bottom: -0.18em;
+  height: 3px;
+  width: 70%;
+  background: linear-gradient(90deg, transparent, var(--ah-underline-color), transparent);
+  transform-origin: left center;
+  border-radius: 2px;
+  animation: ah-underline 560ms var(--ah-ease) calc(var(--ah-duration) / 2) both;
+  pointer-events: none;
+}
+/* Animated Movie Icon (Clapperboard) */
+.movie-icon {
+    --icon-size: 48px;
+    /* --- LIGHT MODE COLOR --- */
+    --icon-color: #E50914; /* Your brand's red color */
+    --icon-pop-dur: 480ms;
+
+    display: inline-block;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    color: var(--icon-color);
+    line-height: 0;
+    vertical-align: middle;
+    will-change: transform, opacity;
+    transform-origin: center;
+    animation: icon-pop var(--icon-pop-dur) cubic-bezier(.2,.9,.3,1) both;
+    transition: transform 220ms ease, filter 220ms ease;
+    filter: drop-shadow(0 6px 16px rgba(229, 9, 20, 0.18));
+}
+
+/* --- DARK MODE COLOR OVERRIDE --- */
+body.dark-mode .movie-icon {
+    --icon-color: #fff; /* White for better contrast in dark mode */
+    filter: drop-shadow(0 6px 16px rgba(255, 255, 255, 0.15));
+}
+
+.movie-icon:hover,
+.movie-icon:focus {
+    transform: translateY(-4px) rotate(-3deg) scale(1.03);
+    filter: drop-shadow(0 8px 20px rgba(20,30,60,0.12));
+    cursor: pointer;
+}
+
+/* Size variants */
+.movie-icon--sm { --icon-size: 36px; }
+.movie-icon--lg { --icon-size: 64px; }
+
+/* Entrance animation */
+@keyframes icon-pop {
+    0%   { transform: scale(0.88) translateY(6px); opacity: 0; filter: blur(6px); }
+    60%  { transform: scale(1.05) translateY(-2px); opacity: 1; filter: blur(0); }
+    100% { transform: scale(1) translateY(0); opacity: 1; filter: none; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .movie-icon {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        filter: none !important;
+    }
+}
+/* Keyframes */
+@keyframes ah-slideFade {
+  0%   { transform: translateY(8px) scale(0.995); opacity: 0; filter: blur(6px); }
+  60%  { transform: translateY(-4px) scale(1.01); opacity: 1; filter: blur(0.5px); }
+  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes ah-shimmer {
+  0%   { background-position: -120% 0; }
+  100% { background-position: 120% 0; }
+}
+
+@keyframes ah-underline {
+  0%   { transform: translateX(-50%) scaleX(0); opacity: 0; }
+  60%  { transform: translateX(-50%) scaleX(1.03); opacity: 1; }
+  100% { transform: translateX(-50%) scaleX(1); opacity: 1; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animated-heading,
+  .animated-heading::after {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: initial;
+    background-position: initial !important;
+  }
+  .animated-heading {
+    color: var(--ah-color-fallback);
+  }
+}
+/* Title for "My Wishlist" */
+.movie-title {
+    /* --- LIGHT MODE COLORS (Red to Black) --- */
+    --mt-grad-1: #E50914; /* Red */
+    --mt-grad-2: #444;    /* Dark Grey */
+    --mt-accent: #000;    /* Black */
+
+    display: inline-block;
+    margin: 0;
+    padding: .125em .35em;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-size: clamp(1.1rem, 3vw, 1.5rem); /* Smaller font size */
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    position: relative;
+    color: var(--mt-grad-1);
+
+    background: linear-gradient(90deg, var(--mt-grad-1) 0%, var(--mt-grad-2) 50%, var(--mt-accent) 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- DARK MODE OVERRIDE (Dark Red to White) --- */
+body.dark-mode .movie-title {
+    --mt-grad-1: #A11620; /* Dark Red */
+    --mt-grad-2: #ccc;    /* Light Grey */
+    --mt-accent: #fff;    /* White */
+}
+
+/* Static underline for the title */
+.movie-title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: calc(-0.18em);
+    transform-origin: left center;
+    width: 64%;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--mt-grad-2), var(--mt-accent), transparent);
+    transform: scaleX(1); /* Makes the underline always visible */
+}
+body.dark-mode label.form-label {
+  color: #f1f1f1; /* or var(--text-color) if defined */
+}
+/* Hide number input arrows for all browsers */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield; /* for Firefox */
+}
+/* Support for animated headline in Dark Mode */
+/* Theme Toggle Button */
+#theme-toggle {
+    cursor: pointer;
+    font-size: 1.25rem;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    padding: 5px 10px;
+}
+
+#theme-toggle .bi-sun-fill { display: none; }
+#theme-toggle .bi-moon-fill { display: inline-block; }
+body.dark-mode .card-text.text-muted {
+    color: #888 !important;
+}
+body.dark-mode #theme-toggle .bi-sun-fill { display: inline-block; }
+body.dark-mode #theme-toggle .bi-moon-fill { display: none; }
