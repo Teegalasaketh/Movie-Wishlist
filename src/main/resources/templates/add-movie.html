@@ -44,11 +44,24 @@
 		    <h1 class="movie-title">Movie Wishlist</h1>
 		</a>
             <div class="d-flex align-items-center">
-                 <a href="/add-wishlist" class="btn btn-brand me-3">Back to Wishlist</a>
-                 <button id="theme-toggle" class="btn">
-                     <i class="bi bi-moon-fill"></i>
-                     <i class="bi bi-sun-fill"></i>
-                 </button>
+
+                <a href="/add-wishlist" class="btn btn-brand me-3">Back to Wishlist</a>
+
+                <!-- profile initials -->
+                <span th:if="${session.userInitials}"
+                      class="profile-circle me-3">
+                    <span th:text="${session.userInitials}">AB</span>
+                </span>
+
+                <!-- logout icon -->
+                <a th:if="${session.user}" href="/logout" class="btn p-0 me-3" title="Logout">
+                    <i class="bi bi-box-arrow-right fs-4"></i>
+                </a>
+
+                <button id="theme-toggle" class="btn">
+                    <i class="bi bi-moon-fill"></i>
+                    <i class="bi bi-sun-fill"></i>
+                </button>
             </div>
         </div>
     </nav>
@@ -59,27 +72,32 @@
                 <div class="card" style="background-color: var(--card-bg); border: 1px solid var(--border-color);">
                     <div class="card-body p-4">
                         <header class="hero py-3 mb-4">
-						  <h1 class="animated-heading">My Wishlist</h1>
+						  <h1 class="animated-heading">Add Movie</h1>
 						</header>
                         <form th:action="@{/save}" th:object="${movie}" method="post">
-                            <div class="mb-3">
-                                <label for="title" class="form-label">Title:</label>
-                                <input type="text" id="title" class="form-control" th:field="*{title}" required/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="releaseYear" class="form-label">Release Year:</label>
-                                <input type="number" id="releaseYear" class="form-control" th:field="*{releaseDate}" required/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="director" class="form-label">Director:</label>
-                                <input type="text" id="director" class="form-control" th:field="*{director}" required/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="rating" class="form-label">Rating (out of 10):</label>
-                                <input type="number" step="0.1" min="0" max="10" id="rating" class="form-control" th:field="*{rating}" required/>
-                            </div>
-                            <button type="submit" class="btn btn-brand w-100 me-3">Save Movie</button>
-                        </form>
+                          <div class="mb-3">
+                              <label for="title" class="form-label">Title:</label>
+                              <input type="text" id="title" class="form-control" th:field="*{title}" required/>
+                          </div>
+
+                          <div class="mb-3">
+                              <label for="releaseYear" class="form-label">Release Year:</label>
+                              <input type="number" id="releaseYear" class="form-control" th:field="*{releaseYear}" required/>
+                          </div>
+
+                          <div class="mb-3">
+                              <label for="director" class="form-label">Director:</label>
+                              <input type="text" id="director" class="form-control" th:field="*{director}" required/>
+                          </div>
+
+                          <div class="mb-3">
+                              <label for="rating" class="form-label">Rating (out of 10):</label>
+                              <input type="number" step="0.1" min="0" max="10" id="rating"
+                                    class="form-control" th:field="*{rating}" required/>
+                          </div>
+
+                          <button type="submit" class="btn btn-brand w-100 me-3">Save Movie</button>
+                      </form>
                     </div>
                 </div>
             </div>

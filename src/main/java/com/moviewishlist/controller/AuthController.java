@@ -15,31 +15,21 @@ public class AuthController {
         this.userService = userService;
     }
 
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
+    }
+
     @GetMapping("/signup")
-    public String showSignupForm(Model model) {
+    public String signupPage(Model model) {
         model.addAttribute("user", new User());
         return "signup";
     }
 
     @PostMapping("/signup")
     public String register(@ModelAttribute User user, Model model) {
-        String message = userService.register(user);
-        model.addAttribute("message", message);
-        return "login"; // redirect to login page after signup
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm() {
+        String msg = userService.register(user);
+        model.addAttribute("message", msg);
         return "login";
     }
-
-//    @PostMapping("/login")
-//    public String login(@RequestParam String username, @RequestParam String password, Model model) {
-//        if (userService.login(username, password)) {
-//            return "redirect:/"; // go to home page
-//        } else {
-//            model.addAttribute("error", "Invalid username or password!");
-//            return "login";
-//        }
-//    }
 }

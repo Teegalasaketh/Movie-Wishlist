@@ -106,4 +106,10 @@ public class MovieService {
     public void deleteMovie(long id) {
         movieRepository.deleteById(id);
     }
+    @SuppressWarnings("null")
+    public Movie findById(Long id) {
+        return movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+    }
+
 }

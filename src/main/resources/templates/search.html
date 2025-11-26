@@ -44,12 +44,26 @@
 		    <h1 class="movie-title">Movie Wishlist</h1>
 		</a>
             <div class="d-flex align-items-center">
-                 <a href="/add-wishlist" class="btn btn-brand me-3">View Wishlist</a>
-                 <button id="theme-toggle" class="btn">
-                     <i class="bi bi-moon-fill"></i>
-                     <i class="bi bi-sun-fill"></i>
-                 </button>
-            </div>
+
+            <a href="/add-wishlist" class="btn btn-brand me-3">View Wishlist</a>
+
+            <!-- ✅ PROFILE INITIALS CIRCLE -->
+            <span th:if="${session.userInitials}"
+                  class="profile-circle me-3"
+                  th:text="${session.userInitials}">
+            </span>
+
+            <!-- ✅ LOGOUT ICON -->
+            <a th:if="${session.user}" href="/logout" class="btn p-0 me-3" title="Logout">
+                <i class="bi bi-box-arrow-right fs-4 text-danger"></i>
+            </a>
+
+            <!-- existing theme toggle -->
+            <button id="theme-toggle" class="btn">
+                <i class="bi bi-moon-fill"></i>
+                <i class="bi bi-sun-fill"></i>
+            </button>
+        	</div>
         </div>
         <a href="/add-custom" class="btn btn-brand me-3">Add Custom Movie</a>
     </nav>

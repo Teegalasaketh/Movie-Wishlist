@@ -21,7 +21,7 @@ public class MovieController {
     }
 
     // ✅ Default page = Search page
-    @GetMapping("/")
+    @GetMapping("/movies")
     public String home() {
         return "search";
     }
