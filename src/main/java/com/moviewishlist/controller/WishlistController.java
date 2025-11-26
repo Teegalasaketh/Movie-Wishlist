@@ -31,8 +31,12 @@ public class WishlistController {
 
     @GetMapping("/wishlist")
     public String viewWishlist(HttpSession session, Model model) {
+
         User user = (User) session.getAttribute("user");
-        model.addAttribute("wishlist", wishlistService.getWishlist(user));
-        return "wishlist";
+
+        model.addAttribute("movies", wishlistService.getWishlist(user));
+
+        return "index";   // index.html shows wishlist
     }
+
 }

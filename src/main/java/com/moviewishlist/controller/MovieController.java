@@ -64,12 +64,18 @@ public class MovieController {
         movieService.deleteMovie(id);
         return "redirect:/add-wishlist"; // ✅ refresh wishlist after delete
     }
-
+    
     @GetMapping("/add-custom")
     public String showAddCustomForm(Model model) {
+
         model.addAttribute("movie", new Movie());
-        return "add-movie"; // this will use add-movie.html
+
+        // Add this if you want to show movies list on this page:
+        model.addAttribute("movies", movieService.getAllMovies());
+
+        return "add-movie";
     }
+
 
     @PostMapping("/save")
     public String saveCustomMovie(@ModelAttribute Movie movie) {

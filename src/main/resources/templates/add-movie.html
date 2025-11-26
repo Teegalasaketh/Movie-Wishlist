@@ -48,15 +48,13 @@
                 <a href="/add-wishlist" class="btn btn-brand me-3">Back to Wishlist</a>
 
                 <!-- profile initials -->
-                <span th:if="${session.userInitials}"
-                      class="profile-circle me-3">
-                    <span th:text="${session.userInitials}">AB</span>
-                </span>
+                <span th:if="${session.userInitials}" class="profile-circle me-3">
+                  <span th:text="${session.userInitials}">AB</span>
+              </span>
 
-                <!-- logout icon -->
-                <a th:if="${session.user}" href="/logout" class="btn p-0 me-3" title="Logout">
-                    <i class="bi bi-box-arrow-right fs-4"></i>
-                </a>
+              <a th:if="${session.user}" href="/logout" class="logout-circle me-3" title="Logout">
+                  <i class="bi bi-box-arrow-right"></i>
+              </a>
 
                 <button id="theme-toggle" class="btn">
                     <i class="bi bi-moon-fill"></i>
@@ -72,7 +70,7 @@
                 <div class="card" style="background-color: var(--card-bg); border: 1px solid var(--border-color);">
                     <div class="card-body p-4">
                         <header class="hero py-3 mb-4">
-						  <h1 class="animated-heading">Add Movie</h1>
+						  <h2 class="login-title text-center mb-3">Add Movie</h2>
 						</header>
                         <form th:action="@{/save}" th:object="${movie}" method="post">
                           <div class="mb-3">
@@ -95,8 +93,10 @@
                               <input type="number" step="0.1" min="0" max="10" id="rating"
                                     class="form-control" th:field="*{rating}" required/>
                           </div>
+                          <div class="text-center">
+                              <button type="submit" class="btn btn-brand mt-3 auth-btn">Save Movie</button>
+                          </div>
 
-                          <button type="submit" class="btn btn-brand w-100 me-3">Save Movie</button>
                       </form>
                     </div>
                 </div>

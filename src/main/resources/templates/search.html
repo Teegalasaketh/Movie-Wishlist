@@ -48,15 +48,13 @@
             <a href="/add-wishlist" class="btn btn-brand me-3">View Wishlist</a>
 
             <!-- ✅ PROFILE INITIALS CIRCLE -->
-            <span th:if="${session.userInitials}"
-                  class="profile-circle me-3"
-                  th:text="${session.userInitials}">
-            </span>
+            <span th:if="${session.userInitials}" class="profile-circle me-3">
+                  <span th:text="${session.userInitials}">AB</span>
+              </span>
 
-            <!-- ✅ LOGOUT ICON -->
-            <a th:if="${session.user}" href="/logout" class="btn p-0 me-3" title="Logout">
-                <i class="bi bi-box-arrow-right fs-4 text-danger"></i>
-            </a>
+              <a th:if="${session.user}" href="/logout" class="logout-circle me-3" title="Logout">
+                  <i class="bi bi-box-arrow-right"></i>
+              </a>
 
             <!-- existing theme toggle -->
             <button id="theme-toggle" class="btn">
@@ -65,7 +63,6 @@
             </button>
         	</div>
         </div>
-        <a href="/add-custom" class="btn btn-brand me-3">Add Custom Movie</a>
     </nav>
 
     <div class="container mt-4">
@@ -106,7 +103,7 @@
             </div>
         </div>
     </div>
-	<div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
 	  <div id="toastMsg" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
 	    <div class="d-flex">
 	      <div class="toast-body">

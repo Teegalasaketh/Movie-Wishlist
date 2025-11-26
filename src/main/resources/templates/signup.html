@@ -11,14 +11,37 @@
 <nav class="navbar navbar-expand-lg sticky-top py-1">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center" href="/">
-      <span class="movie-icon movie-icon--sm me-2" aria-hidden="true">
-        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img">
-          <title>Movie icon</title>
-          <rect x="6" y="26" width="52" height="30" rx="3" fill="currentColor"/>
-        </svg>
-      </span>
-      <h1 class="movie-title">Movie Wishlist</h1>
-    </a>
+		    <span class="movie-icon movie-icon--sm me-2" aria-hidden="true">
+		      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img">
+		        <title>Movie icon</title>
+		        <defs>
+		          <linearGradient id="mv-grad" x1="0" x2="1" y1="0" y2="1">
+		            <stop offset="0" stop-color="currentColor" stop-opacity="0.95"/>
+		            <stop offset="1" stop-color="currentColor" stop-opacity="0.65"/>
+		          </linearGradient>
+		        </defs>
+		        <g stroke="none" fill="none">
+		          <rect x="6" y="26" width="52" height="30" rx="3" fill="url(#mv-grad)"/>
+		          <rect x="8" y="28" width="48" height="26" rx="2" fill="#fff" opacity="0.06"/>
+		          <g transform="translate(6,6)">
+		            <rect x="0" y="0" width="52" height="14" rx="2" fill="currentColor"/>
+		            <g fill="#fff" opacity="0.12">
+		              <rect x="2" y="2" width="10" height="10" transform="skewX(-18)"/>
+		              <rect x="16" y="2" width="10" height="10" transform="skewX(-18)"/>
+		              <rect x="30" y="2" width="10" height="10" transform="skewX(-18)"/>
+		            </g>
+		          </g>
+		          <g fill="#fff" opacity="0.18">
+		            <circle cx="22" cy="42" r="2.4"/>
+		            <circle cx="30" cy="42" r="2.4"/>
+		            <circle cx="38" cy="42" r="2.4"/>
+		          </g>
+		          <rect x="6" y="26" width="52" height="30" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.12" stroke-width="1.5"/>
+		        </g>
+		      </svg>
+		    </span>
+		    <h1 class="movie-title">Movie Wishlist</h1>
+</a>
     <div class="d-flex align-items-center">
       <a href="/login" class="btn btn-brand me-3">Login</a>
       <button id="theme-toggle" class="btn">
@@ -35,7 +58,7 @@
       <div class="col-md-5">
         <div class="card auth-card">
           <div class="card-body p-4">
-            <h2 class="h4 mb-3 text-center">Create your account</h2>
+            <h2 class="login-title text-center mb-3">Create your account</h2>
             <form th:action="@{/signup}" th:object="${user}" method="post">
               <div class="mb-3">
                 <label class="form-label">Username</label>
@@ -49,7 +72,9 @@
                 <label class="form-label">Password</label>
                 <input type="password" th:field="*{password}" class="form-control" required>
               </div>
-              <button type="submit" class="btn btn-brand w-100 mt-3">Sign Up</button>
+              <div class="text-center">
+                <button type="submit" class="btn btn-brand  mt-3">Sign Up</button>
+              </div>
             </form>
             <p class="text-center mt-3">Already have an account?
               <a href="/login" class="text-decoration-none">Login</a>

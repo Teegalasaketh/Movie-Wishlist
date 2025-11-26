@@ -536,7 +536,7 @@ body.dark-mode #theme-toggle .bi-moon-fill { display: none; }
 }
 
 /* Buttons */
-.auth-card .btn-brand {
+/* .auth-card .btn-brand {
     background-color: var(--brand-color);
     border: none;
     color: #fff;
@@ -548,7 +548,11 @@ body.dark-mode #theme-toggle .bi-moon-fill { display: none; }
 
 .auth-card .btn-brand:hover {
     background-color: var(--brand-hover);
+} */
+.auth-card .btn-brand {
+    font-size: 1.05rem;
 }
+
 
 /* Links */
 .auth-card a {
@@ -560,17 +564,167 @@ body.dark-mode #theme-toggle .bi-moon-fill { display: none; }
     text-decoration: underline;
 }
 
-/* profile */
-.profile-circle {
-    width: 36px;
-    height: 36px;
+/* ===============================
+   PROFILE CIRCLE + LOGOUT CIRCLE
+   — Gradient text like Movie Wishlist
+   =============================== */
+
+.profile-circle,
+.logout-circle {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background: #ff4757;
-    color: #fff;
-    font-weight: 600;
-    display: inline-flex;
+    border: 2px solid var(--brand-color);
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
-    margin-right: 0.5rem;
+    font-weight: 700;
+    font-size: 17px;
+
+    background: transparent; /* no background */
+    transition: all 0.25s ease;
+
+    /* --- GRADIENT TEXT (LIGHT MODE) --- */
+    background-image: linear-gradient(
+        90deg,
+        #E50914 0%,
+        #444 50%,
+        #000 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Icon inside logout circle */
+.logout-circle i {
+    font-size: 18px;
+
+    /* Same gradient text */
+    background-image: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ---- DARK MODE OVERRIDE ---- */
+body.dark-mode .profile-circle,
+body.dark-mode .logout-circle {
+    border-color: #fff;
+
+    background-image: linear-gradient(
+        90deg,
+        #A11620 0%,
+        #ccc 50%,
+        #fff 100%
+    );
+}
+
+/* Dark mode icon override */
+body.dark-mode .logout-circle i {
+    background-image: inherit;
+}
+
+/* ---- HOVER EFFECT (ONLY TEXT COLOR CHANGE) ---- */
+.profile-circle:hover,
+.logout-circle:hover {
+    border-color: #ff4d4d;
+
+    background-image: linear-gradient(
+        90deg,
+        #ff4d4d 0%,
+        #aa2222 50%,
+        #660000 100%
+    );
+}
+
+body.dark-mode .profile-circle:hover,
+body.dark-mode .logout-circle:hover {
+    border-color: #ff6666;
+    background-image: linear-gradient(
+        90deg,
+        #ff6666 0%,
+        #ddd 50%,
+        #fff 100%
+    );
+}
+
+.login-title {
+    --mt-grad-1: #E50914;
+    --mt-grad-2: #444;
+    --mt-accent: #000;
+
+    display: block; /* Center perfectly */
+    margin-left: auto;
+    margin-right: auto;
+
+    padding: .1em .25em;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+
+    background: linear-gradient(90deg, var(--mt-grad-1) 0%, var(--mt-grad-2) 50%, var(--mt-accent) 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.dark-mode .login-title {
+    --mt-grad-1: #A11620;
+    --mt-grad-2: #ccc;
+    --mt-accent: #fff;
+}
+/* ============================================
+   GLASSMORPHIC TOAST + GRADIENT TEXT
+   ============================================ */
+#toastMsg {
+    background: rgba(255, 255, 255, 0.18) !important; /* light glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px var(--shadow-color);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* DARK MODE: darker glass */
+body.dark-mode #toastMsg {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-color: var(--border-color);
+}
+
+/* Toast text with gradient (same as your brand style) */
+#toastMsg .toast-body {
+    font-weight: 600;
+    font-size: 1rem;
+    padding-right: 12px;
+
+    /* LIGHT MODE gradient text */
+    background-image: linear-gradient(
+        90deg,
+        #E50914 0%,
+        #444 50%,
+        #000 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* DARK MODE gradient */
+body.dark-mode #toastMsg .toast-body {
+    background-image: linear-gradient(
+        90deg,
+        #A11620 0%,
+        #ccc 50%,
+        #fff 100%
+    );
+}
+
+/* CLOSE BUTTON — clean white icon */
+#toastMsg .btn-close {
+    filter: brightness(0) invert(1);
 }
