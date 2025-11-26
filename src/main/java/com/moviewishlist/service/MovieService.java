@@ -56,7 +56,7 @@ public class MovieService {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked", "rawtypes", "null" })
     public void addMovieToWishlist(long tmdbId) {
         // ✅ Avoid duplicates by TMDb ID
         if (movieRepository.findByTmdbId(tmdbId).isPresent()) {
