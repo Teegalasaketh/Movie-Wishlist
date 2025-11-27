@@ -30,7 +30,7 @@ public class HomeController {
         session.setAttribute("user", user);
         session.setAttribute("userInitials", buildInitials(user.getUsername()));
 
-        return "index"; // index.html template
+        return "redirect:/wishlist"; // index.html template
     }
 
     private String buildInitials(String username) {

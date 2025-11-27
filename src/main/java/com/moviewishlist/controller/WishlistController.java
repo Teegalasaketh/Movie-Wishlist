@@ -2,9 +2,13 @@ package com.moviewishlist.controller;
 
 import com.moviewishlist.model.Movie;
 import com.moviewishlist.model.User;
+import com.moviewishlist.model.Wishlist;
 import com.moviewishlist.service.MovieService;
 import com.moviewishlist.service.WishlistService;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +33,34 @@ public class WishlistController {
         return "redirect:/wishlist";
     }
 
-    @GetMapping("/wishlist")
+    /* @GetMapping("/wishlist")
     public String viewWishlist(HttpSession session, Model model) {
 
         User user = (User) session.getAttribute("user");
 
-        model.addAttribute("movies", wishlistService.getWishlist(user));
+        List<Movie> movies = wishlistService.getWishlist(user)
+                                    .stream()
+                                    .map(w -> w.getMovie())
+                                    .toList();
+
+        model.addAttribute("wishlist", movies);
 
         return "index";   // index.html shows wishlist
+    } */
+   @GetMapping("/wishlist")
+    public String viewWishlist(HttpSession session, Model model) {
+
+        User user = (User) session.getAttribute("user");
+
+        List<Wishlist> wishlist = wishlistService.getWishlist(user); 
+        model.addAttribute("wishlist", wishlist);
+
+        return "index";
     }
 
+    @PostMapping("/wishlist/delete/{id}")
+    public String deleteWishlistItem(@PathVariable Long id) {
+        wishlistService.deleteById(id);
+        return "redirect:/wishlist";
+    }
 }

@@ -75,7 +75,6 @@
 		</div>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"
           th:unless="${#lists.isEmpty(wishlist)}">
-
           <div class="col" th:each="item : ${wishlist}">
               <div class="card movie-card h-100">
 
@@ -91,7 +90,7 @@
                         th:text="${#strings.abbreviate(item.movie.overview, 100)}">Overview...</p>
 
                       <!-- delete wishlist entry -->
-                      <form th:action="@{/wishlist/delete/{id}(id=${item.id})}" method="get" class="mt-3">
+                      <form th:action="@{/wishlist/delete/{id}(id=${item.id})}" method="post" class="mt-3">
                           <button type="submit" class="btn btn-brand w-100">Remove</button>
                       </form>
                   </div>
@@ -100,13 +99,12 @@
       </div>
 
 
-        <div class="text-center p-5 rounded" style="background-color: var(--card-bg);" th:if="${#lists.isEmpty(movies)}">
+        <div class="text-center p-5 rounded" style="background-color: var(--card-bg);" th:if="${#lists.isEmpty(wishlist)}">
             <h2 class="">Your Wishlist is Empty</h2>
             <p style="color: red;">Looks like you haven't added any movies yet. Start by searching for one!</p>
             <a href="/search" class="btn btn-brand mt-3">Search for a Movie</a>
         </div>
     </div>
-
     <script th:src="@{/js/theme.js}"></script>
 </body>
 </html>

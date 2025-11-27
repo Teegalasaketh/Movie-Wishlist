@@ -13,11 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URLEncoder; // <-- Added for encoding query
-import java.nio.charset.StandardCharsets; // <-- Added for encoding query
 import java.util.Map;
 import java.util.Optional;
+import java.net.URLEncoder; // <-- Added for encoding query
+import java.nio.charset.StandardCharsets; // <-- Added for encoding query
 @Service
 public class MovieService {
 
@@ -57,35 +56,47 @@ public class MovieService {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes", "null" })
-    public void addMovieToWishlist(long tmdbId) {
-        // ✅ Avoid duplicates by TMDb ID
-        if (movieRepository.findByTmdbId(tmdbId).isPresent()) {
-            logger.info("Movie with TMDb ID {} already exists in wishlist", tmdbId);
-            return;
+    public Movie addMovieToWishlist(long tmdbId) {
+
+        // 1) Check if movie already exists
+        Optional<Movie> existing = movieRepository.findByTmdbId(tmdbId);
+        if (existing.isPresent()) {
+            return existing.get();
         }
 
         String url = "https://api.themoviedb.org/3/movie/" + tmdbId;
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + apiToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
+
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+            ResponseEntity<Map> response =
+                    restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+
             Map<String, Object> movieDetails = response.getBody();
 
             if (movieDetails != null) {
+
                 Movie movie = new Movie();
                 movie.setTmdbId(((Number) movieDetails.get("id")).longValue());
                 movie.setTitle((String) movieDetails.get("title"));
                 movie.setOverview((String) movieDetails.get("overview"));
                 movie.setPosterPath((String) movieDetails.get("poster_path"));
                 movie.setReleaseDate((String) movieDetails.get("release_date"));
+
                 movieRepository.save(movie);
+
+                return movie;  // <-- IMPORTANT
             }
+
         } catch (RestClientException e) {
             logger.error("Error fetching TMDb details for ID {}: {}", tmdbId, e.getMessage());
         }
+
+        return null;  // <-- FINAL RETURN (important to compile)
     }
 
     // 🎥 Add custom movie manually
