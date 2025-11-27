@@ -133,8 +133,13 @@
 	        console.error('Fetch error:', err);
 	        alert('Server not reachable.');
 	    }
+		const addSound = document.getElementById('sound-add');
+		if (addSound) {
+			addSound.currentTime = 0;   // rewind to start
+			addSound.play().catch(() => {});
+		}
 	}
 	</script>
-
+<audio id="sound-add" src="/sounds/notify.mp3" preload="auto"></audio>
 </body>
 </html> 

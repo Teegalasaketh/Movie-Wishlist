@@ -726,3 +726,54 @@ body.dark-mode #toastMsg .toast-body {
 #toastMsg .btn-close {
     filter: brightness(0) invert(1);
 }
+
+/* ==========================================================
+   PERFECT COPY OF #toastMsg → for #toastRemove
+   ========================================================== */
+
+/* Light mode glass */
+#toastRemove {
+    background: rgba(255, 255, 255, 0.18) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px var(--shadow-color) !important;
+}
+
+/* Dark mode glass */
+body.dark-mode #toastRemove {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-color: var(--border-color);
+}
+
+/* Gradient text EXACT same as Add toast */
+#toastRemove .toast-body {
+    font-weight: 600;
+    font-size: 1rem;
+    padding-right: 12px;
+
+    background-image: linear-gradient(
+        90deg,
+        #E50914 0%,
+        #444 50%,
+        #000 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.dark-mode #toastRemove .toast-body {
+    background-image: linear-gradient(
+        90deg,
+        #A11620 0%,
+        #ccc 50%,
+        #fff 100%
+    );
+}
+
+/* Close button white */
+#toastRemove .btn-close {
+    filter: brightness(0) invert(1);
+}

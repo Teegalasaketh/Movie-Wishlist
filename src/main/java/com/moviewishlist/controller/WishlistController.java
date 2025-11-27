@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class WishlistController {
@@ -59,8 +60,9 @@ public class WishlistController {
     }
 
     @PostMapping("/wishlist/delete/{id}")
-    public String deleteWishlistItem(@PathVariable Long id) {
+    public String deleteWishlistItem(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         wishlistService.deleteById(id);
+        redirectAttributes.addFlashAttribute("removed", true);
         return "redirect:/wishlist";
     }
 }
