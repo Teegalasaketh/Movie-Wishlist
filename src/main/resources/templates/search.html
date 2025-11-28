@@ -9,9 +9,9 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg sticky-top py-1">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="/">
+    <nav class="navbar navbar-expand sticky-top py-1">
+        <div class="container-fluid px-3">
+            <a class="navbar-brand d-flex align-items-center" href="/search">
 		    <span class="movie-icon movie-icon--sm me-2" aria-hidden="true">
 		      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img">
 		        <title>Movie icon</title>
@@ -43,14 +43,17 @@
 		    </span>
 		    <h1 class="movie-title">Movie Wishlist</h1>
 		</a>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center flex-nowrap ms-auto gap-2">
 
             <a href="/wishlist" class="btn btn-brand me-3">View Wishlist</a>
 
             <!-- ✅ PROFILE INITIALS CIRCLE -->
-            <span th:if="${session.userInitials}" class="profile-circle me-3">
-                  <span th:text="${session.userInitials}">AB</span>
-              </span>
+            <span th:if="${session.userInitials}"
+				class="profile-circle me-3"
+				th:title="${session.user.username}">
+				<span th:text="${session.userInitials}">AB</span>
+			</span>
+
 
               <a th:if="${session.user}" href="/logout" class="logout-circle me-3" title="Logout">
                   <i class="bi bi-box-arrow-right"></i>
@@ -65,7 +68,7 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container-fluid mt-4 px-4">
         <header class="hero">
 		  <h1 class="animated-heading">Find Your Favorite Movies</h1>
 		</header>
@@ -117,25 +120,38 @@
 	<script th:src="@{/js/theme.js}"></script>
 	<script>
 	async function addToWishlist(button) {
-	    const tmdbId = button.getAttribute("data-tmdb-id");
-	
-	    try {
-	        const res = await fetch(`/add?tmdbId=${tmdbId}`);
-	        if (res.ok) {
-	            const toastEl = document.getElementById('toastMsg');
-	            const toast = new bootstrap.Toast(toastEl); // ✅ now works
-	            toast.show();
-	            setTimeout(() => toast.hide(), 3000);
-	        } else {
-	            alert('Server error: ' + res.status);
-	        }
-	    } catch (err) {
-	        console.error('Fetch error:', err);
-	        alert('Server not reachable.');
-	    }
+		const tmdbId = button.getAttribute("data-tmdb-id");
+
+		try {
+			const res = await fetch(`/add?tmdbId=${tmdbId}`);
+			const text = await res.text();   // <-- read response text ("added", "exists", "error")
+
+			const toastEl = document.getElementById('toastMsg');
+			const toastBody = toastEl.querySelector('.toast-body');
+
+			if (text === "added") {
+				toastBody.innerText = "Added to Wishlist 🎬";
+			} 
+			else if (text === "exists") {
+				toastBody.innerText = "Already in Wishlist!!";
+			} 
+			else {
+				toastBody.innerText = "Something went wrong ❌";
+			}
+
+			const toast = new bootstrap.Toast(toastEl);
+			toast.show();
+			setTimeout(() => toast.hide(), 3000);
+
+		} catch (err) {
+			console.error('Fetch error:', err);
+			alert('Server not reachable.');
+		}
+
+		// Sound effect (optional)
 		const addSound = document.getElementById('sound-add');
 		if (addSound) {
-			addSound.currentTime = 0;   // rewind to start
+			addSound.currentTime = 0;
 			addSound.play().catch(() => {});
 		}
 	}

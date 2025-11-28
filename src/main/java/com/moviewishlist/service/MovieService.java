@@ -55,15 +55,15 @@ public class MovieService {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes", "null" })
     public Movie addMovieToWishlist(long tmdbId) {
 
-        // 1) Check if movie already exists
+    // 1) If movie already exists in DB → return it
         Optional<Movie> existing = movieRepository.findByTmdbId(tmdbId);
         if (existing.isPresent()) {
             return existing.get();
         }
 
+        // 2) Fetch TMDB and create a new Movie
         String url = "https://api.themoviedb.org/3/movie/" + tmdbId;
 
         HttpHeaders headers = new HttpHeaders();
@@ -85,32 +85,52 @@ public class MovieService {
                 movie.setTitle((String) movieDetails.get("title"));
                 movie.setOverview((String) movieDetails.get("overview"));
                 movie.setPosterPath((String) movieDetails.get("poster_path"));
+
+                // FULL release date (ex: 2010-07-16)
                 movie.setReleaseDate((String) movieDetails.get("release_date"));
 
-                movieRepository.save(movie);
+                // Extract year (if exists)
+                String releaseDate = (String) movieDetails.get("release_date");
+                if (releaseDate != null && releaseDate.length() >= 4) {
+                    movie.setReleaseYear(Integer.parseInt(releaseDate.substring(0, 4)));
+                }
 
-                return movie;  // <-- IMPORTANT
+                // TMDB rating
+                Object vote = movieDetails.get("vote_average");
+                if (vote != null) {
+                    movie.setRating(((Number) vote).doubleValue());
+                }
+
+                return movieRepository.save(movie);
             }
 
         } catch (RestClientException e) {
             logger.error("Error fetching TMDb details for ID {}: {}", tmdbId, e.getMessage());
         }
 
-        return null;  // <-- FINAL RETURN (important to compile)
+        return null;
     }
+
+
 
     // 🎥 Add custom movie manually
-    public void saveCustomMovie(Movie movie) {
-        // ✅ Avoid duplicates by title (case-insensitive)
+    public Movie saveCustomMovie(Movie movie) {
+
         Optional<Movie> existing = movieRepository.findByTitleIgnoreCase(movie.getTitle());
         if (existing.isPresent()) {
-            logger.info("Movie '{}' already exists in wishlist", movie.getTitle());
-            return;
+            return existing.get();   // return existing movie
         }
 
-        movieRepository.save(movie);
-        logger.info("Custom movie '{}' added successfully", movie.getTitle());
+        // Default fields for custom movies
+        movie.setTmdbId(null);
+        movie.setPosterPath(null);
+        movie.setOverview("Custom added movie");
+        movie.setReleaseDate(movie.getReleaseYear() + "-01-01");
+        movie.setCast("Unknown");
+
+        return movieRepository.save(movie);   // return saved movie
     }
+
     public Iterable<Movie> getAllMovies() {
         return movieRepository.findAll();
     }

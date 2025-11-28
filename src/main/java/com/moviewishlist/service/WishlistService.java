@@ -7,6 +7,7 @@ import com.moviewishlist.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WishlistService {
@@ -17,12 +18,22 @@ public class WishlistService {
         this.wishlistRepository = wishlistRepository;
     }
 
-    public void addToWishlist(Movie movie, User user) {
+    public boolean addToWishlist(Movie movie, User user) {
+
+        Optional<Wishlist> existing = wishlistRepository.findByUserAndMovie(user, movie);
+        if (existing.isPresent()) {
+            return false;
+        }
+
         Wishlist w = new Wishlist();
         w.setMovie(movie);
         w.setUser(user);
         wishlistRepository.save(w);
+
+        return true;
     }
+
+
 
     public List<Wishlist> getWishlist(User user) {
         return wishlistRepository.findByUser(user);

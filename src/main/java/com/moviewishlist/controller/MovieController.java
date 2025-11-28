@@ -46,22 +46,19 @@ public class MovieController {
     }
 
     // Add to wishlist
-    @GetMapping("/add")
+   @GetMapping("/add")
     @ResponseBody
     public ResponseEntity<String> addToWishlist(@RequestParam("tmdbId") long tmdbId, HttpSession session) {
-        try {
-            Movie movie = movieService.addMovieToWishlist(tmdbId);
 
-            User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 
-            wishlistService.addToWishlist(movie, user);
+        Movie movie = movieService.addMovieToWishlist(tmdbId);
 
-            return ResponseEntity.ok("success");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("error");
-        }
+        boolean added = wishlistService.addToWishlist(movie, user);
+
+        return ResponseEntity.ok(added ? "added" : "exists");
     }
+
 
 
     // ✅ Wishlist page (for "View Wishlist" button)
@@ -88,9 +85,20 @@ public class MovieController {
     }
 
 
-    @PostMapping("/save")
-    public String saveCustomMovie(@ModelAttribute Movie movie) {
+   @PostMapping("/save")
+    public String saveCustomMovie(@ModelAttribute Movie movie, HttpSession session) {
+
+        // Save movie normally
         movieService.saveCustomMovie(movie);
-        return "redirect:/add-wishlist"; // go back to wishlist after saving
+
+        // Get logged-in user
+        User user = (User) session.getAttribute("user");
+
+        // Add movie to wishlist
+        wishlistService.addToWishlist(movie, user);
+
+        // Redirect to wishlist page
+        return "redirect:/wishlist";
     }
+
 }

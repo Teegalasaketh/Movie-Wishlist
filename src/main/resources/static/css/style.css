@@ -777,3 +777,50 @@ body.dark-mode #toastRemove .toast-body {
 #toastRemove .btn-close {
     filter: brightness(0) invert(1);
 }
+
+
+.rating-badge {
+    display: inline-block;
+    padding: 4px 9px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    /* glass background (light mode) */
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+
+    /* gradient text */
+    background-image: linear-gradient(
+        90deg,
+        #E50914 0%,
+        #444 50%,
+        #000 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* smooth */
+    transition: background 0.3s ease, border 0.3s ease;
+}
+
+/* ⭐ DARK MODE override */
+body.dark-mode .rating-badge {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    /* dark gradient text */
+    background-image: linear-gradient(
+        90deg,
+        #A11620 0%,
+        #ccc 50%,
+        #fff 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
