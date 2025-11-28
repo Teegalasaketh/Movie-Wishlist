@@ -55,6 +55,7 @@ public class MovieService {
         }
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public Movie addMovieToWishlist(long tmdbId) {
 
     // 1) If movie already exists in DB → return it
