@@ -80,7 +80,7 @@
 
                   <!-- POSTER -->
                   <!-- If poster exists -->
-                  <div th:if="${item.movie.posterPath != null}">
+                  <div th:if="${item.movie != null and item.movie.posterPath != null}">
                       <div class="poster-container"
                           th:style="'background-image: url(https://image.tmdb.org/t/p/w500' + ${item.movie.posterPath} + ');'">
                           <img th:src="@{'https://image.tmdb.org/t/p/w500' + ${item.movie.posterPath}}" alt="Movie Poster"/>
@@ -88,7 +88,7 @@
                   </div>
 
                   <!-- If no poster OR it's a custom movie -->
-                  <div th:unless="${item.movie.posterPath != null}">
+                  <div  th:unless="${item.movie != null and item.movie.posterPath != null}">
                       <div class="img-not-found" role="img" aria-label="Image not found">
                           Img Not Found
                       </div>
@@ -96,20 +96,20 @@
                   <div class="card-body">
 
                     <!-- Movie Title -->
-                    <h5 class="card-title" th:text="${item.movie.title}">Movie Title</h5>
+                    <h5 class="card-title" th:text="${item.movie != null ? item.movie.title : 'Unknown Movie'}">Movie Title</h5>
 
                     <!-- Year + Rating Row -->
                     <div class="d-flex justify-content-between align-items-center mb-2">
 
                         <!-- Release Year -->
                         <span class="wishlist-info"
-                              th:if="${item.movie.releaseYear != null}"
+                              th:if="${item.movie != null and item.movie.releaseYear != null}"
                               th:text="'Year: ' + ${item.movie.releaseYear}">
                         </span>
 
                         <!-- Rating -->
                         <span class="rating-badge"
-                              th:if="${item.movie.rating != null}"
+                              th:if="${item.movie != null and item.movie.rating != null}"
                               th:text="'⭐ ' + ${#numbers.formatDecimal(item.movie.rating, 1, 1)}">
                         </span>
                     </div>
