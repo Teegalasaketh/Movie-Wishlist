@@ -46,7 +46,6 @@
             <div class="d-flex align-items-center flex-nowrap ms-auto gap-2">
 
               <a href="/search" class="btn btn-brand me-3">Find a Movie</a>
-
               <!-- profile initials circle (only when logged in) -->
               <span th:if="${session.userInitials}" class="profile-circle me-3">
                   <span th:text="${session.userInitials}">AB</span>
@@ -99,6 +98,10 @@
                     <h5 class="card-title" th:text="${item.movie != null ? item.movie.title : 'Unknown Movie'}">Movie Title</h5>
 
                     <!-- Year + Rating Row -->
+                     <!-- Overview Hover Reveal -->
+                    
+
+
                     <div class="d-flex justify-content-between align-items-center mb-2">
 
                         <!-- Release Year -->
@@ -121,6 +124,9 @@
 
                         <button type="submit" class="btn btn-brand w-100">Remove</button>
                     </form>
+                    <div class="floating-overview"
+                        th:text="${item.movie != null ? item.movie.overview : 'No overview available'}">
+                    </div>
 
                 </div>
 

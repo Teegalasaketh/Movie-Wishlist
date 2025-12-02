@@ -824,3 +824,51 @@ body.dark-mode .rating-badge {
     -webkit-text-fill-color: transparent;
 }
 
+/* Floating Overview Popup (Below Title + Rating Section) */
+.floating-overview {
+    position: absolute;
+    top: 50%;
+    left: 100%; /* Start exactly at right edge */
+     transform: translate(-25%, 20px); /* Slightly right */
+    width: 260px;
+
+    padding: 12px 14px;
+    border-radius: 10px;
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    opacity: 0;
+    pointer-events: none;
+
+    /* Smooth slide + fade theme (matches your animations) */
+    transition:
+        opacity 400ms cubic-bezier(.2,.9,.3,1),
+        transform 400ms cubic-bezier(.2,.9,.3,1);
+}
+
+/* Dark Mode */
+body.dark-mode .floating-overview {
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* Hover → Slide In */
+.movie-card:hover .floating-overview {
+    opacity: 1;
+    pointer-events: auto;
+
+    /* Slide forward smoothly */
+    transform: translate(0, -25%);
+}
+.movie-card {
+    position: relative;
+    overflow: visible !important; /* allow popup outside the card */
+    z-index: 1;
+}
+.movie-card:hover {
+    z-index: 50;                /* ⬆ this will sit above other cards */
+}
+
+
+

@@ -1,5 +1,6 @@
 package com.moviewishlist.service;
 
+
 import com.moviewishlist.model.Movie;
 import com.moviewishlist.repository.MovieRepository;
 import org.slf4j.Logger;
@@ -143,5 +144,5 @@ public class MovieService {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
     }
-
+    
 }
