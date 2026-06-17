@@ -20,4 +20,6 @@ public class Wishlist {
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    private Long addedAt;
 }
