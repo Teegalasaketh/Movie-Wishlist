@@ -47,10 +47,10 @@
 
                 <a href="/wishlist" class="btn btn-brand me-3">Back to Wishlist</a>
 
-                <!-- profile initials -->
-                <span th:if="${session.userInitials}" class="profile-circle me-3">
+                <!-- profile initials button opens modal -->
+                <button th:if="${session.userInitials}" type="button" class="profile-circle btn btn-sm me-3" data-bs-toggle="modal" data-bs-target="#profileCardModal" th:title="${session.user != null ? session.user.username : ''}">
                   <span th:text="${session.userInitials}">AB</span>
-              </span>
+                </button>
 
               <a th:if="${session.user}" href="/logout" class="logout-circle me-3" title="Logout">
                   <i class="bi bi-box-arrow-right"></i>
@@ -104,6 +104,7 @@
         </div>
     </div>
 
+    <div th:insert="~{fragments/profile-card :: profileModal}"></div>
     <script th:src="@{/js/theme.js}"></script>
 </body>
 </html>

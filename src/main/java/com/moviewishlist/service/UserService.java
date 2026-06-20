@@ -44,4 +44,44 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
     }
 
+    public Optional<User> findByUsernameOptional(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    // Change the user's password after validating the current password
+    public boolean changePassword(String username, String currentPassword, String newPassword) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) return false;
+
+        User user = userOpt.get();
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            return false; // current password does not match
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
+
+    // Update username/email (basic uniqueness checks)
+    public User updateProfile(String username, String newUsername, String newEmail) {
+        User user = getByUsername(username);
+
+        if (newUsername != null && !newUsername.equals(user.getUsername())) {
+            if (userRepository.findByUsername(newUsername).isPresent()) {
+                throw new IllegalArgumentException("Username already in use");
+            }
+            user.setUsername(newUsername);
+        }
+
+        if (newEmail != null && !newEmail.equals(user.getEmail())) {
+            if (userRepository.findByEmail(newEmail).isPresent()) {
+                throw new IllegalArgumentException("Email already in use");
+            }
+            user.setEmail(newEmail);
+        }
+
+        return userRepository.save(user);
+    }
+
 }

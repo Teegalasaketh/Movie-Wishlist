@@ -1,8 +1,11 @@
 package com.moviewishlist.controller;
 
 import com.moviewishlist.model.User;
+import com.moviewishlist.security.CustomUserDetails;
 import com.moviewishlist.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -19,18 +22,39 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(HttpSession session, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
 
-        // Principal contains the authenticated username from Spring Security
         String username = principal.getName();
+        User user = null;
 
-        // Fetch full User from DB
-        User user = userService.getByUsername(username);
+        if (username != null) {
+            user = userService.findByUsernameOptional(username).orElse(null);
+        }
 
-        // Store user + initials in session (for navbar)
+        if (user == null) {
+            Object sessionUser = session.getAttribute("user");
+            if (sessionUser instanceof User) {
+                user = (User) sessionUser;
+            }
+        }
+
+        if (user == null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+                user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+            }
+        }
+
+        if (user == null) {
+            return "redirect:/login";
+        }
+
         session.setAttribute("user", user);
         session.setAttribute("userInitials", buildInitials(user.getUsername()));
 
-        return "redirect:/wishlist"; // index.html template
+        return "redirect:/wishlist";
     }
 
     private String buildInitials(String username) {

@@ -21,14 +21,18 @@ public class GlobalUserSession {
     public void addUserToSession(HttpSession session, Principal principal) {
         if (principal == null) return; // user not logged in
 
-        // Already set? Don't set again.
-        if (session.getAttribute("user") != null) return;
-
         String username = principal.getName();
-        User user = userService.getByUsername(username);
+        if (username == null) return;
 
-        session.setAttribute("user", user);
-        session.setAttribute("userInitials", buildInitials(username));
+        Object sessionUser = session.getAttribute("user");
+        if (sessionUser instanceof User existing && username.equals(existing.getUsername())) {
+            return; // already loaded and current
+        }
+
+        userService.findByUsernameOptional(username).ifPresent(user -> {
+            session.setAttribute("user", user);
+            session.setAttribute("userInitials", buildInitials(user.getUsername()));
+        });
     }
 
     private String buildInitials(String username) {

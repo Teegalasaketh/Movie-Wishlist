@@ -47,7 +47,33 @@ public class MovieController {
      * Default page = Search page
      */
     @GetMapping("/movies")
-    public String home() {
+    public String home(Model model) {
+
+        model.addAttribute(
+            "trending",
+            movieService.getTrendingMovies().get("results")
+        );
+
+        model.addAttribute(
+            "upcoming",
+            movieService.getUpcomingMovies().get("results")
+        );
+
+        model.addAttribute(
+            "actionMovies",
+            movieService.getMoviesByGenre(28).get("results")
+        );
+
+        model.addAttribute(
+            "comedyMovies",
+            movieService.getMoviesByGenre(35).get("results")
+        );
+
+        model.addAttribute(
+            "scifiMovies",
+            movieService.getMoviesByGenre(878).get("results")
+        );
+
         return "search";
     }
 
@@ -55,15 +81,42 @@ public class MovieController {
      * Search for movies via TMDB
      */
     @GetMapping("/search")
-    public String search(@RequestParam(value = "query", required = false) String query, Model model) {
+    public String search(
+            @RequestParam(value = "query", required = false) String query,
+            Model model) {
+
+        model.addAttribute(
+            "trending",
+            movieService.getTrendingMovies().get("results")
+        );
+
+        model.addAttribute(
+            "upcoming",
+            movieService.getUpcomingMovies().get("results")
+        );
+
+        model.addAttribute(
+            "actionMovies",
+            movieService.getMoviesByGenre(28).get("results")
+        );
+
+        model.addAttribute(
+            "comedyMovies",
+            movieService.getMoviesByGenre(35).get("results")
+        );
+
+        model.addAttribute(
+            "scifiMovies",
+            movieService.getMoviesByGenre(878).get("results")
+        );
+
         if (query != null && !query.isEmpty()) {
             Map<String, Object> response = movieService.searchMovies(query);
+
             model.addAttribute("results", response.get("results"));
             model.addAttribute("query", query);
-            if (response.isEmpty()) {
-                model.addAttribute("errorMessage", "Unable to reach TMDb. Please try again later.");
-            }
         }
+
         return "search";
     }
 
@@ -216,5 +269,30 @@ public class MovieController {
             "n8n_connected", n8nHealthy,
             "timestamp", System.currentTimeMillis()
         );
+    }
+    @GetMapping("/autocomplete")
+    @ResponseBody
+    public Object autocomplete(@RequestParam String query) {
+
+        if (query == null || query.trim().length() < 2) {
+            return java.util.List.of();
+        }
+
+        Map<String, Object> response = movieService.searchMovies(query);
+
+        return response.get("results");
+    }
+    @GetMapping("/live-search")
+    @ResponseBody
+    public Object liveSearch(@RequestParam String query) {
+
+        if(query == null || query.trim().length() < 2){
+            return java.util.List.of();
+        }
+
+        Map<String, Object> response =
+                movieService.searchMovies(query);
+
+        return response.get("results");
     }
 }

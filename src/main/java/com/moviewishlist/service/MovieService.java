@@ -14,8 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.net.URLEncoder; // <-- Added for encoding query
 import java.nio.charset.StandardCharsets; // <-- Added for encoding query
 @Service
@@ -144,5 +147,87 @@ public class MovieService {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
     }
-    
+    public Map<String, Object> getTrendingMovies() {
+    String url =
+        "https://api.themoviedb.org/3/trending/movie/week";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(apiToken);
+
+    HttpEntity<String> entity =
+        new HttpEntity<>(headers);
+
+    return restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            entity,
+            Map.class
+    ).getBody();
+}
+public Map<String, Object> getUpcomingMovies() {
+
+    String url =
+        "https://api.themoviedb.org/3/movie/upcoming";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(apiToken);
+
+    HttpEntity<String> entity =
+        new HttpEntity<>(headers);
+
+    Map<String, Object> response = restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            entity,
+            Map.class
+    ).getBody();
+
+    if (response == null) {
+        return Map.of();
+    }
+
+    Object resultsObj = response.get("results");
+    if (!(resultsObj instanceof List<?> resultsList)) {
+        return response;
+    }
+
+    List<Map<String, Object>> filtered = resultsList.stream()
+            .filter(item -> item instanceof Map<?, ?>)
+            .map(item -> (Map<String, Object>) item)
+            .filter(movie -> {
+                Object releaseDateObj = movie.get("release_date");
+                if (!(releaseDateObj instanceof String releaseDate) || releaseDate.isBlank()) {
+                    return false;
+                }
+                try {
+                    LocalDate releaseDateValue = LocalDate.parse(releaseDate);
+                    return releaseDateValue.isAfter(LocalDate.now());
+                } catch (Exception ex) {
+                    return false;
+                }
+            })
+            .collect(Collectors.toList());
+
+    response.put("results", filtered);
+    return response;
+}
+public Map<String, Object> getMoviesByGenre(int genreId) {
+
+    String url =
+        "https://api.themoviedb.org/3/discover/movie?with_genres="
+        + genreId;
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(apiToken);
+
+    HttpEntity<String> entity =
+        new HttpEntity<>(headers);
+
+    return restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            entity,
+            Map.class
+    ).getBody();
+}
 }
