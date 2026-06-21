@@ -6,14 +6,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import com.moviewishlist.security.LoginSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final LoginSuccessHandler loginSuccessHandler;
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(
+            CustomUserDetailsService userDetailsService,
+            LoginSuccessHandler loginSuccessHandler) {
+
         this.userDetailsService = userDetailsService;
+        this.loginSuccessHandler = loginSuccessHandler;
     }
 
     @Bean
@@ -30,7 +36,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/search",true)
+                .successHandler(loginSuccessHandler)
                 .failureUrl("/login?error=true")
                 .permitAll()
             )

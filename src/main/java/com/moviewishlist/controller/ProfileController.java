@@ -23,14 +23,18 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/change-password")
-    public String changePassword(Principal principal,
-                                 @RequestParam String currentPassword,
-                                 @RequestParam String newPassword,
-                                 @RequestParam(required = false) String confirmPassword,
-                                 HttpSession session) {
+    public String changePassword(
+        Principal principal,
+        @RequestParam String currentPassword,
+        @RequestParam String newPassword,
+        @RequestParam(required = false) String confirmPassword,
+        @RequestParam(required = false) String returnUrl,
+        HttpSession session){
         if (principal == null) return "redirect:/login";
         if (confirmPassword != null && !confirmPassword.equals(newPassword)) {
-            return "redirect:/?passwordMismatch";
+           return "redirect:" + returnUrl +
+       (returnUrl.contains("?") ? "&" : "?")
+       + "passwordMismatch";
         }
 
         String username = principal.getName();
@@ -39,16 +43,22 @@ public class ProfileController {
             // refresh session user
             User u = userService.getByUsername(username);
             session.setAttribute("user", u);
-            return "redirect:/?passwordChanged";
+            return "redirect:" + returnUrl +
+       (returnUrl.contains("?") ? "&" : "?")
+       + "passwordChanged";
         }
-        return "redirect:/?passwordFailed";
+        return "redirect:" + returnUrl +
+       (returnUrl.contains("?") ? "&" : "?")
+       + "passwordFailed";
     }
 
     @PostMapping("/profile/update")
-    public String updateProfile(Principal principal,
-                                @RequestParam(required = false) String username,
-                                @RequestParam(required = false) String email,
-                                HttpSession session) {
+    public String updateProfile(
+        Principal principal,
+        @RequestParam(required = false) String username,
+        @RequestParam(required = false) String email,
+        @RequestParam(required = false) String returnUrl,
+        HttpSession session){
         String current = principal.getName();
         try {
             User updated = userService.updateProfile(current, username, email);
@@ -73,9 +83,13 @@ public class ProfileController {
                 }
             }
 
-            return "redirect:/?profileUpdated";
+            return "redirect:" + returnUrl +
+       (returnUrl.contains("?") ? "&" : "?")
+       + "profileUpdated";
         } catch (IllegalArgumentException ex) {
-            return "redirect:/?profileUpdateFailed";
+            return "redirect:" + returnUrl +
+       (returnUrl.contains("?") ? "&" : "?")
+       + "profileUpdateFailed";
         }
     }
 }

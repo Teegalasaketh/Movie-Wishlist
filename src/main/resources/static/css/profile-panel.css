@@ -1,0 +1,685 @@
+/* ============================================
+   MODERN PROFILE MANAGEMENT PANEL
+   Premium Account Management UI Redesign
+   ============================================ */
+
+/* ========== PROFILE PANEL BACKDROP & OVERLAY ========== */
+.profile-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1040;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.profile-panel-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ========== PROFILE MANAGEMENT PANEL CARD ========== */
+.profile-panel-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.92);
+    z-index: 1050;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.3, 1),
+                transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.profile-panel-card.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Main Card Styling */
+.profile-panel {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background glow for premium feel */
+.profile-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(229, 9, 20, 0.03) 0%, 
+        rgba(229, 9, 20, 0.01) 100%);
+    pointer-events: none;
+}
+
+/* ========== PROFILE HEADER SECTION ========== */
+.profile-panel-header {
+    padding: 40px 32px 32px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Close Button */
+.profile-panel-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 20px;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.profile-panel-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: rotate(90deg);
+}
+
+body.dark-mode .profile-panel-close {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .profile-panel-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Avatar */
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E50914 0%, #A11620 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    margin: 0 auto 16px;
+    box-shadow: 0 8px 24px rgba(229, 9, 20, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+/* Username */
+.profile-panel-username {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+}
+
+/* Email */
+.profile-panel-email {
+    font-size: 0.95rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin: 0;
+    word-break: break-all;
+}
+
+/* ========== PROFILE ACTIONS SECTION ========== */
+.profile-panel-actions {
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Panel Button Styling */
+.profile-btn {
+    padding: 12px 24px;
+    height: 44px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Primary Action Button (Edit Profile) */
+.profile-btn-primary {
+    background: linear-gradient(90deg, #E50914 0%, #c40812 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+}
+
+.profile-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+}
+
+.profile-btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Secondary Action Button (Change Password) */
+.profile-btn-secondary {
+    background: var(--form-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.profile-btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: var(--text-color);
+    transform: translateY(-2px);
+}
+
+.profile-btn-secondary:active {
+    transform: translateY(0);
+}
+
+body.dark-mode .profile-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Danger Button (Logout) */
+.profile-btn-danger {
+    background: transparent;
+    color: #E50914;
+    border: 1.5px solid #E50914;
+    font-weight: 600;
+}
+
+.profile-btn-danger:hover {
+    background: rgba(229, 9, 20, 0.08);
+    transform: translateY(-2px);
+}
+
+.profile-btn-danger:active {
+    transform: translateY(0);
+}
+
+body.dark-mode .profile-btn-danger:hover {
+    background: rgba(229, 9, 20, 0.12);
+}
+
+/* ========== MODERN MODALS (Edit Profile, Change Password, Forgot Password) ========== */
+.modal-content {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Modal Header */
+.modal-header {
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, 
+        rgba(229, 9, 20, 0.02) 0%, 
+        rgba(229, 9, 20, 0.01) 100%);
+}
+
+.modal-header .modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+    letter-spacing: -0.5px;
+}
+
+/* Modal Close Button */
+.modal-header .btn-close {
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    border: none;
+    opacity: 1;
+    transition: all 0.2s ease;
+}
+
+.modal-header .btn-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: rotate(90deg);
+}
+
+body.dark-mode .modal-header .btn-close {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .modal-header .btn-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 28px 32px;
+}
+
+/* Form Labels */
+.modal-body .form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 0.3px;
+}
+
+/* Form Inputs */
+.modal-body .form-control {
+    background-color: var(--form-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    color: var(--form-text);
+    transition: all 0.2s ease;
+    height: 42px;
+}
+
+.modal-body .form-control:focus {
+    background-color: var(--form-bg);
+    border-color: #E50914;
+    color: var(--form-text);
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.15);
+    outline: none;
+}
+
+.modal-body .form-control::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
+/* Input Group for Password Visibility Toggle */
+.modal-body .input-group {
+    position: relative;
+}
+
+.modal-body .password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body .password-toggle:hover {
+    opacity: 1;
+}
+
+/* Form Group Spacing */
+.modal-body .mb-3 {
+    margin-bottom: 20px;
+}
+
+.modal-body .mb-3:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 20px 32px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+/* Modal Footer Buttons */
+.modal-footer .btn {
+    padding: 10px 24px;
+    height: 42px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
+    border: none;
+}
+
+.modal-footer .btn-light {
+    background: var(--form-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.modal-footer .btn-light:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: var(--text-color);
+    transform: translateY(-2px);
+}
+
+.modal-footer .btn-light:active {
+    transform: translateY(0);
+}
+
+body.dark-mode .modal-footer .btn-light:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Brand Primary Button in Modal Footer */
+.modal-footer .btn-brand {
+    background: linear-gradient(90deg, #E50914 0%, #c40812 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+}
+
+.modal-footer .btn-brand:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+    background: linear-gradient(90deg, #E50914 0%, #c40812 100%);
+    -webkit-text-fill-color: white;
+    color: white;
+}
+
+.modal-footer .btn-brand:active {
+    transform: translateY(0);
+}
+
+/* Override Bootstrap's btn-brand text gradient in modals */
+.modal-footer .btn-brand {
+    background-color: linear-gradient(90deg, #E50914 0%, #c40812 100%);
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: white;
+}
+
+/* ========== SUCCESS STATE ========== */
+.modal-success-state {
+    display: none;
+    text-align: center;
+    padding: 40px 32px;
+}
+
+.modal-success-state.active {
+    display: block;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, #E50914 0%, #c40812 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    box-shadow: 0 8px 24px rgba(229, 9, 20, 0.25);
+    animation: scaleIn 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.success-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.success-submessage {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1),
+                opacity 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* ========== VALIDATION MESSAGES ========== */
+.invalid-feedback {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #E50914;
+    font-weight: 500;
+}
+
+.valid-feedback {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #22c55e;
+    font-weight: 500;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 576px) {
+    .profile-panel {
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .profile-panel-header {
+        padding: 28px 20px 20px;
+    }
+
+    .profile-panel-actions {
+        padding: 16px 20px;
+    }
+
+    .profile-avatar {
+        width: 64px;
+        height: 64px;
+        font-size: 24px;
+    }
+
+    .profile-panel-username {
+        font-size: 1.25rem;
+    }
+
+    .profile-panel-email {
+        font-size: 0.85rem;
+    }
+
+    .modal-header {
+        padding: 20px;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 16px 20px;
+        flex-direction: column-reverse;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+
+    .modal-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .profile-panel {
+        max-width: 95vw;
+    }
+
+    .profile-panel-header {
+        padding: 24px 16px 16px;
+    }
+
+    .profile-panel-username {
+        font-size: 1.1rem;
+    }
+
+    .profile-btn {
+        font-size: 0.9rem;
+        padding: 10px 16px;
+        height: 40px;
+    }
+}
+.profile-avatar {
+width: 90px;
+height: 90px;
+
+margin: 0 auto 20px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+border-radius: 50%;
+
+font-size: 48px;
+font-weight: 700;
+
+transition: all .3s ease;
+
+}
+
+/* DARK MODE */
+body.dark-mode .profile-avatar {
+background: rgba(255,255,255,.08);
+border: 3px solid rgba(255,255,255,.9);
+color: #fff;
+box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+
+/* LIGHT MODE */
+body:not(.dark-mode) .profile-avatar {
+    background: #f3f3f7;
+    border: 4px solid #e50914;
+    color: #444;
+    box-shadow: none;
+}
+
+.profile-panel-header {
+text-align: center;
+}
+
+/* ========== TABLET ADJUSTMENTS ========== */
+@media (max-width: 768px) and (min-width: 577px) {
+    .profile-panel {
+        max-width: 450px;
+    }
+}
+.modal-header {
+    position: relative;
+    min-height: 120px;
+}
+
+.modal-avatar {
+    position: absolute;
+
+    top: 20px;
+    right: 24px;
+
+    margin: 0 !important;
+
+    width: 70px;
+    height: 70px;
+
+    font-size: 32px;
+}
+
+/* ========== DARK MODE SPECIFIC ADJUSTMENTS ========== */
+body.dark-mode .profile-panel {
+    background: var(--card-bg);
+}
+
+body.dark-mode .modal-content {
+    background-color: var(--card-bg);
+}
+
+body.dark-mode .profile-panel-username,
+body.dark-mode .modal-header .modal-title {
+    color: #e0e0e0;
+}
+
+body.dark-mode .profile-panel-email {
+    color: #b0b0b0;
+}
+
+body.dark-mode .modal-body .form-label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .invalid-feedback {
+    color: #ff6b6b;
+}
+
+body.dark-mode .valid-feedback {
+    color: #51cf66;
+}
