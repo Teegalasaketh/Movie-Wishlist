@@ -148,26 +148,144 @@ public class MovieService {
                 .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
     }
     public Map<String, Object> getTrendingMovies() {
+
     String url =
         "https://api.themoviedb.org/3/trending/movie/week";
 
     HttpHeaders headers = new HttpHeaders();
     headers.setBearerAuth(apiToken);
 
-    HttpEntity<String> entity =
-        new HttpEntity<>(headers);
+    HttpEntity<String> entity = new HttpEntity<>(headers);
 
-    return restTemplate.exchange(
+    Map<String, Object> response = restTemplate.exchange(
             url,
             HttpMethod.GET,
             entity,
             Map.class
     ).getBody();
+
+    if(response == null){
+        return Map.of();
+    }
+
+    Object resultsObj = response.get("results");
+
+    if(resultsObj instanceof List<?> resultsList){
+        response.put("results", filterMovies(resultsList));
+    }
+
+    return response;
 }
+@SuppressWarnings("unchecked")
 public Map<String, Object> getUpcomingMovies() {
 
+    List<Map<String, Object>> allMovies = new java.util.ArrayList<>();
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(apiToken);
+
+    HttpEntity<String> entity = new HttpEntity<>(headers);
+
+    for (int page = 1; page <= 5; page++) {
+
+        String url =
+                "https://api.themoviedb.org/3/movie/upcoming?page=" + page;
+
+        try {
+
+            Map<String, Object> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    entity,
+                    Map.class
+            ).getBody();
+
+            if (response == null) {
+                continue;
+            }
+
+            Object resultsObj = response.get("results");
+
+            if (!(resultsObj instanceof List<?> resultsList)) {
+                continue;
+            }
+
+            resultsList.stream()
+                    .filter(item -> item instanceof Map<?, ?>)
+                    .map(item -> (Map<String, Object>) item)
+
+                    // poster required
+                    .filter(movie -> movie.get("poster_path") != null)
+
+                    // overview required
+                    .filter(movie -> {
+                        Object overview = movie.get("overview");
+                        return overview instanceof String
+                                && !((String) overview).isBlank();
+                    })
+
+                    // future movies only
+                    .filter(movie -> {
+
+                        Object releaseDateObj =
+                                movie.get("release_date");
+
+                        if (!(releaseDateObj instanceof String releaseDate)
+                                || releaseDate.isBlank()) {
+                            return false;
+                        }
+
+                        try {
+                            return LocalDate.parse(releaseDate)
+                                    .isAfter(LocalDate.now());
+                        } catch (Exception e) {
+                            return false;
+                        }
+                    })
+
+                    .forEach(allMovies::add);
+
+        } catch (Exception e) {
+            logger.error("Error fetching upcoming movies page {}", page, e);
+        }
+    }
+
+    // remove duplicates
+    allMovies = new java.util.ArrayList<>(
+        allMovies.stream()
+                .collect(Collectors.toMap(
+                        movie -> movie.get("id"),
+                        movie -> movie,
+                        (m1, m2) -> m1
+                ))
+                .values()
+);
+
+    // sort by popularity (blockbusters first)
+    allMovies.sort((a, b) -> {
+        Double p1 = ((Number) a.getOrDefault("popularity", 0))
+                .doubleValue();
+
+        Double p2 = ((Number) b.getOrDefault("popularity", 0))
+                .doubleValue();
+
+        return p2.compareTo(p1);
+    });
+
+    return Map.of(
+            "results",
+            allMovies.stream()
+                    .limit(50)
+                    .toList()
+    );
+}
+public Map<String, Object> getMoviesByGenre(int genreId) {
+
     String url =
-        "https://api.themoviedb.org/3/movie/upcoming";
+    "https://api.themoviedb.org/3/discover/movie"
+    + "?with_genres=" + genreId
+    + "&sort_by=popularity.desc"
+    + "&vote_count.gte=100";
 
     HttpHeaders headers = new HttpHeaders();
     headers.setBearerAuth(apiToken);
@@ -182,52 +300,48 @@ public Map<String, Object> getUpcomingMovies() {
             Map.class
     ).getBody();
 
-    if (response == null) {
+    if(response == null){
         return Map.of();
     }
 
     Object resultsObj = response.get("results");
-    if (!(resultsObj instanceof List<?> resultsList)) {
-        return response;
+
+    if(resultsObj instanceof List<?> resultsList){
+        response.put("results", filterMovies(resultsList));
     }
 
-    List<Map<String, Object>> filtered = resultsList.stream()
-            .filter(item -> item instanceof Map<?, ?>)
-            .map(item -> (Map<String, Object>) item)
-            .filter(movie -> {
-                Object releaseDateObj = movie.get("release_date");
-                if (!(releaseDateObj instanceof String releaseDate) || releaseDate.isBlank()) {
-                    return false;
-                }
-                try {
-                    LocalDate releaseDateValue = LocalDate.parse(releaseDate);
-                    return releaseDateValue.isAfter(LocalDate.now());
-                } catch (Exception ex) {
-                    return false;
-                }
-            })
-            .collect(Collectors.toList());
-
-    response.put("results", filtered);
     return response;
 }
-public Map<String, Object> getMoviesByGenre(int genreId) {
+@SuppressWarnings("unchecked")
+private List<Map<String, Object>> filterMovies(List<?> resultsList) {
 
-    String url =
-        "https://api.themoviedb.org/3/discover/movie?with_genres="
-        + genreId;
+    return resultsList.stream()
+            .filter(item -> item instanceof Map<?, ?>)
+            .map(item -> (Map<String, Object>) item)
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setBearerAuth(apiToken);
+            .filter(movie -> movie.get("poster_path") != null)
 
-    HttpEntity<String> entity =
-        new HttpEntity<>(headers);
+            .filter(movie -> movie.get("overview") != null)
 
-    return restTemplate.exchange(
-            url,
-            HttpMethod.GET,
-            entity,
-            Map.class
-    ).getBody();
+            .filter(this::isReleased)
+
+            .collect(Collectors.toList());
+}
+private boolean isReleased(Map<String, Object> movie) {
+
+    Object releaseDateObj = movie.get("release_date");
+
+    if (!(releaseDateObj instanceof String releaseDate)
+            || releaseDate.isBlank()) {
+        return false;
+    }
+
+    try {
+        return !LocalDate.parse(releaseDate)
+                .isAfter(LocalDate.now());
+
+    } catch (Exception e) {
+        return false;
+    }
 }
 }

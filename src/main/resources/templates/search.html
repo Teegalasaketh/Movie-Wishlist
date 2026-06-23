@@ -121,7 +121,7 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="wishlist-info"
                                           th:if="${movie['release_date'] != null and #strings.length(movie['release_date']) >= 4}"
-                                          th:text="'Year: ' + ${#strings.substring(movie['release_date'], 0, 4)}">
+                                          th:text="${movie['release_date']}">
                                     </span>
 
                                     <span class="rating-badge"
@@ -169,7 +169,7 @@
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="wishlist-info"
                                       th:if="${movie['release_date'] != null and #strings.length(movie['release_date']) >= 4}"
-                                      th:text="'Year: ' + ${#strings.substring(movie['release_date'], 0, 4)}">
+                                     th:text="${movie['release_date']}">
                                 </span>
 
                                 <span class="rating-badge"
@@ -216,7 +216,7 @@
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="wishlist-info"
                                       th:if="${movie['release_date'] != null and #strings.length(movie['release_date']) >= 4}"
-                                      th:text="'Year: ' + ${#strings.substring(movie['release_date'], 0, 4)}">
+                                     th:text="${movie['release_date']}">
                                 </span>
 
                                 <span class="rating-badge"
@@ -241,7 +241,7 @@
         </section>
 
         <section class="movie-section">
-            <h2 class="animated-heading">😂 Comedy Movies</h2>
+            <h2 class="animated-heading">🤣Comedy Movies</h2>
 
             <div class="movie-row">
                 <div th:each="movie : ${comedyMovies}">
@@ -263,7 +263,7 @@
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="wishlist-info"
                                       th:if="${movie['release_date'] != null and #strings.length(movie['release_date']) >= 4}"
-                                      th:text="'Year: ' + ${#strings.substring(movie['release_date'], 0, 4)}">
+                                    th:text="${movie['release_date']}">
                                 </span>
 
                                 <span class="rating-badge"
@@ -310,7 +310,7 @@
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="wishlist-info"
                                       th:if="${movie['release_date'] != null and #strings.length(movie['release_date']) >= 4}"
-                                      th:text="'Year: ' + ${#strings.substring(movie['release_date'], 0, 4)}">
+                                      th:text="${movie['release_date']} + ' 😂'">
                                 </span>
 
                                 <span class="rating-badge"
@@ -352,7 +352,7 @@
                     <div class="card-body">
                         <div>
                             <h5 class="card-title" th:text="${movie.title}">Movie Title</h5>
-                            <p class="card-text text-muted" th:if="${movie.release_date != null and !#strings.isEmpty(movie.release_date)}" th:text="'Release: ' + ${movie.release_date}"></p>
+                            <p class="card-text text-muted" th:if="${movie.release_date != null and !#strings.isEmpty(movie.release_date)}" th:text="'Release: ' + ${movie.release_date} + ' 😂'"></p>
                         </div>
                         <button type="button" class="btn btn-brand w-100 mt-3" 
 						        th:attr="data-tmdb-id=${movie.id}" 

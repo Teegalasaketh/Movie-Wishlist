@@ -33,4 +33,17 @@ public class Movie {
     private String director;
     private String cast;
     private Double rating;
+    public String getFormattedReleaseDate() {
+
+    if (releaseDate == null || releaseDate.isBlank()) {
+        return "";
+    }
+
+    try {
+        return java.time.LocalDate.parse(releaseDate)
+                .format(java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    } catch (Exception e) {
+        return releaseDate;
+    }
+}
 }

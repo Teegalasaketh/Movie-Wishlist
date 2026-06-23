@@ -57,7 +57,16 @@
     position: relative;
     overflow: hidden;
 }
+.profile-panel{
+    width:min(520px, 95vw);
+    max-width:95vw;
+    max-height:90vh;
 
+    overflow-y:auto;
+}
+.profile-panel{
+    overflow-y:auto;
+}
 /* Subtle background glow for premium feel */
 .profile-panel::before {
     content: '';
@@ -570,6 +579,13 @@ body.dark-mode .modal-footer .btn-light:hover {
         font-size: 1.1rem;
     }
 }
+.navbar .container-fluid{
+    flex-wrap:nowrap;
+}
+
+.movie-title{
+    font-size:clamp(1rem, 2vw, 1.8rem);
+}
 
 @media (max-width: 400px) {
     .profile-panel {
@@ -588,6 +604,21 @@ body.dark-mode .modal-footer .btn-light:hover {
         font-size: 0.9rem;
         padding: 10px 16px;
         height: 40px;
+    }
+}
+.profile-actions{
+    display:flex;
+    gap:12px;
+}
+
+@media(max-width:576px){
+
+    .profile-actions{
+        flex-direction:column;
+    }
+
+    .profile-actions button{
+        width:100%;
     }
 }
 .profile-avatar {
@@ -653,7 +684,129 @@ text-align: center;
 
     font-size: 32px;
 }
+@media(max-width:768px){
 
+    .profile-panel{
+        width:95vw;
+        margin:10px;
+    }
+
+    .profile-circle{
+        width:42px;
+        height:42px;
+        font-size:1rem;
+    }
+
+    .btn-brand{
+        font-size:.9rem;
+        padding:.7rem 1rem;
+    }
+}
+/* ==========================================
+   PROFILE MODAL TITLE
+   ========================================== */
+
+.profile-modal-title {
+    width: 100%;
+    text-align: center;
+    padding: 10px 20px;
+    border: 2px solid #6b6b6b;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+/* ==========================================
+   PROFILE MODAL FOOTER
+   ========================================== */
+
+.modal-footer.profile-footer {
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+}
+
+/* ==========================================
+   PROFILE MODAL BUTTONS
+   ========================================== */
+
+.profile-btn {
+    --btn-grad-1: #E50914;
+    --btn-grad-2: #444;
+    --btn-grad-3: #000;
+
+    min-width: 140px;
+    height: 46px;
+
+    background: transparent;
+    border: 2px solid #5f5a5a;
+    border-radius: 8px;
+
+    font-weight: 700;
+    font-size: 0.95rem;
+
+    transition: all 0.3s ease;
+
+    background-image: linear-gradient(
+        90deg,
+        var(--btn-grad-1) 0%,
+        var(--btn-grad-2) 50%,
+        var(--btn-grad-3) 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255,255,255,0.05);
+    border-color: #8a8a8a;
+    transform: translateY(-2px);
+}
+
+.profile-btn:focus {
+    box-shadow: none;
+}
+.profile-btn {
+    min-width: 140px;
+    height: 46px;
+
+    background-color: transparent !important;
+    border: 2px solid #5f5a5a !important;
+    border-radius: 8px !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+}
+
+/* ==========================================
+   DARK MODE
+   ========================================== */
+
+body.dark-mode .profile-modal-title {
+    border-color: #8a8a8a;
+    color: #d7d2d7;
+}
+
+body.dark-mode .profile-btn {
+    --btn-grad-1: #A11620;
+    --btn-grad-2: #ccc;
+    --btn-grad-3: #fff;
+
+    border-color: #6a6666;
+}
+
+body.dark-mode .profile-btn:hover {
+    border-color: #9a9a9a;
+    background-color: rgba(255,255,255,0.08);
+}
 /* ========== DARK MODE SPECIFIC ADJUSTMENTS ========== */
 body.dark-mode .profile-panel {
     background: var(--card-bg);

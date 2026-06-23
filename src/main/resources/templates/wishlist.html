@@ -16,7 +16,33 @@
 
         <a class="navbar-brand d-flex align-items-center" href="/search">
             <span class="movie-icon movie-icon--sm me-2">
-                🎬
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img">
+		        <title>Movie icon</title>
+		        <defs>
+		          <linearGradient id="mv-grad" x1="0" x2="1" y1="0" y2="1">
+		            <stop offset="0" stop-color="currentColor" stop-opacity="0.95"/>
+		            <stop offset="1" stop-color="currentColor" stop-opacity="0.65"/>
+		          </linearGradient>
+		        </defs>
+		        <g stroke="none" fill="none">
+		          <rect x="6" y="26" width="52" height="30" rx="3" fill="url(#mv-grad)"/>
+		          <rect x="8" y="28" width="48" height="26" rx="2" fill="#fff" opacity="0.06"/>
+		          <g transform="translate(6,6)">
+		            <rect x="0" y="0" width="52" height="14" rx="2" fill="currentColor"/>
+		            <g fill="#fff" opacity="0.12">
+		              <rect x="2" y="2" width="10" height="10" transform="skewX(-18)"/>
+		              <rect x="16" y="2" width="10" height="10" transform="skewX(-18)"/>
+		              <rect x="30" y="2" width="10" height="10" transform="skewX(-18)"/>
+		            </g>
+		          </g>
+		          <g fill="#fff" opacity="0.18">
+		            <circle cx="22" cy="42" r="2.4"/>
+		            <circle cx="30" cy="42" r="2.4"/>
+		            <circle cx="38" cy="42" r="2.4"/>
+		          </g>
+		          <rect x="6" y="26" width="52" height="30" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.12" stroke-width="1.5"/>
+		        </g>
+		      </svg>
             </span>
             <h1 class="movie-title">Movie Wishlist</h1>
         </a>
@@ -63,8 +89,8 @@
     </div>
 
     <!-- Wishlist Grid -->
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"
-         th:if="${!#lists.isEmpty(wishlist)}">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-2"
+     th:if="${!#lists.isEmpty(wishlist)}">
 
         <div class="col" th:each="movie : ${wishlist}">
             <div class="card movie-card h-100">
@@ -94,9 +120,9 @@
                     <div class="d-flex justify-content-between mb-2">
 
                         <span class="wishlist-info"
-                              th:if="${movie.releaseYear != null}"
-                              th:text="'Year: ' + ${movie.releaseYear}">
-                        </span>
+      th:if="${movie.releaseDate != null}"
+      th:text="${movie.releaseDate}">
+</span>
 
                         <span class="rating-badge"
                               th:if="${movie.rating != null}"

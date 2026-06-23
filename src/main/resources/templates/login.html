@@ -70,7 +70,10 @@
                 <input type="password" name="password" class="form-control" required>
               </div>
               <div class="mb-2 text-end">
-                <a href="#" class="small text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                <a th:href="@{/forgot-password}"
+   class="small text-decoration-none">
+    Forgot Password?
+</a>
               </div>
               <div class="text-center">
                 <button type="submit" class="btn btn-brand mt-3 auth-btn">Login</button>
