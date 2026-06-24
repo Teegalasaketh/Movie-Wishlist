@@ -340,16 +340,6 @@ Features:
 
 ---
 
-## 👨‍💻 Developed By
-
-**Teegala Saketh**
-
-B.Tech – Artificial Intelligence & Data Science
-
-Vignan Institute of Technology and Science
-
----
-
 ## 📜 License
 
 This project is developed for educational and learning purposes.
