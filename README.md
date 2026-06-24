@@ -128,7 +128,7 @@ src
 # 🏗️ System Architecture
 
 <p align="center">
-  <img src="images/system-architecture.png" alt="System Architecture" width="700">
+  <img src="images/system-architecture.png" alt="System Architecture" width="500">
 </p>
 
 ---
@@ -138,31 +138,31 @@ src
 ## 🔐 User Authentication Flow
 
 <p align="center">
-  <img src="images/user-auth-flow.png" alt="User Authentication Flow" width="700">
+  <img src="images/user-auth-flow.png" alt="User Authentication Flow" width="500">
 </p>
 
 ## ❤️ Wishlist Management Flow
 
 <p align="center">
-  <img src="images/wishlist-flow.png" alt="Wishlist Management Flow" width="700">
+  <img src="images/wishlist-flow.png" alt="Wishlist Management Flow" width="500">
 </p>
 
 ## 🔑 Forgot Password Flow
 
 <p align="center">
-  <img src="images/forgot-password-flow.png" alt="Forgot Password Flow" width="700">
+  <img src="images/forgot-password-flow.png" alt="Forgot Password Flow" width="500">
 </p>
 
 # 🗄️ Database ER Diagram
 
 <p align="center">
-  <img src="images/database-er-diagram.png" alt="Database ER Diagram" width="700">
+  <img src="images/database-er-diagram.png" alt="Database ER Diagram" width="500">
 </p>
 
 # 🌐 External Integrations
 
 <p align="center">
-  <img src="images/external-integrations.png" alt="External Integrations" width="700">
+  <img src="images/external-integrations.png" alt="External Integrations" width="500">
 </p>
 
 
