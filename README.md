@@ -127,9 +127,9 @@ src
 
 # 🏗️ System Architecture
 
-> 📌 Add System Architecture Diagram Here
-
-![System Architecture](images/system-architecture.png)
+<p align="center">
+  <img src="images/system-architecture.png" alt="System Architecture" width="700">
+</p>
 
 ---
 
@@ -137,63 +137,34 @@ src
 
 ## 🔐 User Authentication Flow
 
-> 📌 Add User Authentication Flow Diagram Here
-
-![User Authentication Flow](images/user-auth-flow.png)
-
-### Flow:
-User Registration → Password Encryption (BCrypt) → Database Storage → Login → Authentication → Session Creation → Dashboard Access
-
----
+<p align="center">
+  <img src="images/user-auth-flow.png" alt="User Authentication Flow" width="700">
+</p>
 
 ## ❤️ Wishlist Management Flow
 
-> 📌 Add Wishlist Management Flow Diagram Here
-
-![Wishlist Management Flow](images/wishlist-flow.png)
-
-### Flow:
-Search Movie → Select Movie → Add to Wishlist → Database Storage → Trigger n8n Workflow → Email Notification → Wishlist Update
-
----
+<p align="center">
+  <img src="images/wishlist-flow.png" alt="Wishlist Management Flow" width="700">
+</p>
 
 ## 🔑 Forgot Password Flow
 
-> 📌 Add Forgot Password Flow Diagram Here
-
-![Forgot Password Flow](images/forgot-password-flow.png)
-
-### Flow:
-Forgot Password Request → Generate Reset Token → Send Email → User Clicks Reset Link → Validate Token → Update Password → Login
-
----
+<p align="center">
+  <img src="images/forgot-password-flow.png" alt="Forgot Password Flow" width="700">
+</p>
 
 # 🗄️ Database ER Diagram
 
-> 📌 Add Database ER Diagram Here
-
-![ER Diagram](images/database-er-diagram.png)
-
-### Main Entities
-
-- User
-- Wishlist
-- Movie
-- Password Reset Token
-
-### Relationships
-
-- One User → Many Wishlist Movies
-- One Movie → Can Exist in Multiple User Wishlists
-- One User → Multiple Password Reset Requests
-
----
+<p align="center">
+  <img src="images/database-er-diagram.png" alt="Database ER Diagram" width="700">
+</p>
 
 # 🌐 External Integrations
 
-> 📌 Add External Integrations Diagram Here
+<p align="center">
+  <img src="images/external-integrations.png" alt="External Integrations" width="700">
+</p>
 
-![External Integrations](images/external-integrations.png)
 
 ### Integrated Services
 
