@@ -8,31 +8,49 @@
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/profile-panel.css}">
   <style>
-    .strength-bar-wrapper{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
+    /* Password strength bar — updated to match app theme: red only, no color gradient */
+    .strength-bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
 
-.strength-bar{
-    width:100%;
-    height:6px;
-    background:rgba(255,255,255,0.1);
-    border-radius:50px;
-    overflow:hidden;
-}
+    .strength-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--border-color);
+      border-radius: 50px;
+      overflow: hidden;
+    }
 
-.strength-fill{
-    height:100%;
-    width:0;
-    transition:.3s ease;
-    border-radius:50px;
-}
+    .strength-fill {
+      height: 100%;
+      width: 0;
+      transition: 0.3s ease;
+      border-radius: 50px;
+      background: #E50914;
+    }
 
-.strength-label{
-    font-size:.85rem;
-    font-weight:600;
-}
+    .strength-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: capitalize;
+      background: linear-gradient(90deg, #E50914 0%, #fff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #E50914;
+    }
+
+    body.dark-mode .strength-label {
+      background: linear-gradient(90deg, #A11620 0%, #fff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #A11620;
+    }
   </style>
 </head>
 <body>
@@ -110,7 +128,7 @@
                oninput="updateStrength(this.value)">
     </div>
 
-    <!-- Strength Bar -->
+    <!-- Strength Bar — updated styling -->
     <div class="strength-bar-wrapper mt-2" id="strengthWrapper" style="display:none">
         <div class="strength-bar">
             <div class="strength-fill" id="strengthFill"></div>
@@ -157,21 +175,25 @@ function updateStrength(val) {
     if (/[0-9]/.test(val)) score++;
     if (/[^A-Za-z0-9]/.test(val)) score++;
 
+    /* Only red color (#E50914) — no color gradient */
     const levels = [
-        { pct: '20%', color: '#e74c3c', text: 'Very Weak' },
-        { pct: '40%', color: '#e67e22', text: 'Weak' },
-        { pct: '60%', color: '#f1c40f', text: 'Fair' },
-        { pct: '80%', color: '#2ecc71', text: 'Strong' },
-        { pct: '100%', color: '#27ae60', text: 'Very Strong' }
+        { pct: '20%', text: 'Very Weak' },
+        { pct: '40%', text: 'Weak' },
+        { pct: '60%', text: 'Fair' },
+        { pct: '80%', text: 'Strong' },
+        { pct: '100%', text: 'Very Strong' }
     ];
 
     const level = levels[Math.min(score - 1, 4)] || levels[0];
 
     fill.style.width = level.pct;
-    fill.style.background = level.color;
+    /* Always red (#E50914) — no color change based on strength */
+    fill.style.background = '#E50914';
     label.textContent = level.text;
-    label.style.color = level.color;
+    /* Always red — no color change */
+    label.style.color = '#E50914';
 }
 </script>
+
 </body>
 </html>

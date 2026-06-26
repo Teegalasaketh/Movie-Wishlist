@@ -1,3 +1,10 @@
+/* ==========================================================
+   AUTH PAGES — Forgot Password · Reset Password · Success · Error
+   
+   Uses ONLY CSS variables from style.css (:root / body.dark-mode).
+   Zero hardcoded colors — light/dark mode works automatically
+   when theme.js adds/removes body.dark-mode.
+   ========================================================== */
 
 *,
 *::before,
@@ -7,108 +14,123 @@
     padding: 0;
 }
 
-/* ========== CSS VARIABLES ========== */
-:root {
-    --primary:          #E50914;
-    --primary-dark:     #c40812;
-    --primary-deep:     #A11620;
-
-    --card-bg:          #1e1e1e;
-    --form-bg:          #2a2a2a;
-    --bg:               #0a0a0a;
-
-    --text-color:       #ffffff;
-    --text-muted:       #b8b8b8;
-    --form-text:        #ffffff;
-
-    --border-color:     rgba(255, 255, 255, 0.1);
-    --btn-border:       #5f5a5a;
-
-    --success:          #2ecc71;
-    --error:            #e74c3c;
-
-    --shadow:           0 20px 60px rgba(0, 0, 0, 0.6);
-
-    --radius-card:      16px;
-    --radius-input:     8px;
-    --radius-btn:       8px;
-
-    --transition:       0.25s ease;
-    --transition-spring: 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+/* ----------------------------------------------------------
+   PAGE
+   ---------------------------------------------------------- */
+html:has(body.auth-page) {
+    height: 100%;
 }
 
-/* ==========================================================
-   PAGE
-   ========================================================== */
-
 body.auth-page {
+    height: 100%;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
-    background: #0a0a0a;
+    background-color: var(--bg-color);
+    transition: background-color 0.3s, color 0.3s;
+
+    /* override any margin/padding Bootstrap or style.css might add */
+    margin: 0 !important;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
 }
 
-/* ==========================================================
-   AUTH CARD — matches modal-content dark style
-   ========================================================== */
-
+/* ----------------------------------------------------------
+   AUTH CARD  — identical to .modal-content in style.css
+   ---------------------------------------------------------- */
 .auth-card {
     width: 100%;
     max-width: 480px;
 
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: var(--radius-card);
-
+    background-color: var(--card-bg);           /* #fff / #1e1e1e */
+    border: 1px solid var(--border-color);       /* #dee2e6 / #333 */
+    border-radius: 16px;
     padding: 0;
-
-    box-shadow: var(--shadow);
-
-    position: relative;
     overflow: hidden;
 
-    animation: authCardIn 0.35s var(--transition-spring);
+    box-shadow: 0 20px 60px var(--shadow-color); /* rgba vars */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    position: relative;
+    animation: authCardIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
-/* ==========================================================
-   HEADER — title + avatar top-right (mirrors modal-header)
-   ========================================================== */
+/* same subtle glow as .profile-panel::before */
+.auth-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+        rgba(229, 9, 20, 0.03) 0%,
+        rgba(229, 9, 20, 0.01) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
 
+/* ----------------------------------------------------------
+   AUTH HEADER  — mirrors .modal-header
+   ---------------------------------------------------------- */
 .auth-header {
     position: relative;
-    min-height: 110px;
-    padding: 32px 32px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
+    min-height: 120px;
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg,
+        rgba(229, 9, 20, 0.02) 0%,
+        rgba(229, 9, 20, 0.01) 100%);
+    z-index: 1;
+    transition: border-color 0.3s;
+    text-align: center;
 }
 
-/* Gradient title text — "Forgot Password" red→white like "Edit Profile" */
+/* Title — exact copy of .login-title in style.css */
 .login-title {
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    margin-bottom: 6px;
-    background: linear-gradient(90deg, #E50914 0%, #444 50%, #ffffff 100%);
+    --mt-grad-1: #E50914;
+    --mt-grad-2: #444;
+    --mt-accent:  #000;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: .1em .25em;
+
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+
+    text-align: center;
+
+    background: linear-gradient(90deg, var(--mt-grad-1) 0%, var(--mt-grad-2) 50%, var(--mt-accent) 100%);
+    background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
-    width: 100%;
-    text-align: left;
+}
+
+/* dark — exact copy of body.dark-mode .login-title in style.css */
+body.dark-mode .login-title {
+    --mt-grad-1: #A11620;
+    --mt-grad-2: #ccc;
+    --mt-accent:  #fff;
 }
 
 .auth-subtitle {
-    color: var(--text-muted);
+    color: var(--text-color);
+    opacity: 0.7;
     font-size: 0.9rem;
     line-height: 1.5;
+    margin-top: 10px;
+    transition: color 0.3s;
 }
 
-/* Avatar — top-right corner, white circle with dark initials/icon */
+/* Avatar — top-right, mirrors .modal-avatar from profile-panel.css */
 .auth-avatar {
     position: absolute;
     top: 20px;
@@ -116,20 +138,34 @@ body.auth-page {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    border: 2px solid rgba(255, 255, 255, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
-    color: #fff;
+    font-size: 30px;
     font-weight: 700;
+    transition: transform 0.3s ease, background 0.3s, border-color 0.3s;
+
+    /* light mode — mirrors body:not(.dark-mode) .profile-avatar */
+    background: #f3f3f7;
+    border: 4px solid var(--brand-color);
+    color: #444;
 }
 
-/* ==========================================================
-   FORM BODY
-   ========================================================== */
+body.dark-mode .auth-avatar {
+    /* dark mode — mirrors body.dark-mode .profile-avatar */
+    background: rgba(255, 255, 255, 0.08);
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
 
+.auth-avatar:hover {
+    transform: scale(1.05);
+}
+
+/* ----------------------------------------------------------
+   AUTH BODY  — mirrors .modal-body padding/spacing
+   ---------------------------------------------------------- */
 .auth-body {
     padding: 28px 32px;
     position: relative;
@@ -140,47 +176,54 @@ body.auth-page {
     margin-bottom: 20px;
 }
 
+.form-group:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Labels — mirrors .modal-body .form-label / style.css .modal-content .form-label */
 .form-label {
     display: block;
     margin-bottom: 8px;
-    color: var(--text-color);
     font-size: 0.9rem;
     font-weight: 600;
-    letter-spacing: 0.2px;
+    color: var(--text-color);
+    letter-spacing: 0.3px;
+    transition: color 0.3s;
 }
 
-/* Inputs — match the dark filled inputs in screenshot */
+/* Inputs — mirrors .modal-body .form-control */
 .form-input {
     width: 100%;
-    background: var(--form-bg);
-    color: var(--form-text);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-input);
-    padding: 12px 16px;
+    background-color: var(--form-bg);           /* #e9ecef / #333 */
+    border: 1px solid var(--border-color);       /* #dee2e6 / #333 */
+    border-radius: 10px;
+    padding: 10px 16px;
     font-size: 0.95rem;
-    height: 46px;
-    transition: all var(--transition);
+    color: var(--form-text);                     /* #121212 / #fff */
+    height: 42px;
+    transition: background-color 0.3s, border-color 0.25s ease, color 0.3s, box-shadow 0.25s;
 }
 
 .form-input::placeholder {
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--form-text);
+    opacity: 0.5;
 }
 
 .form-input:focus {
     outline: none;
-    border-color: rgba(229, 9, 20, 0.6);
-    background: #303030;
-    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.12);
+    border-color: var(--brand-color);            /* #E50914 always */
+    background-color: var(--form-bg);
+    color: var(--form-text);
+    box-shadow: 0 0 0 3px var(--glow-color);     /* rgba(229,9,20,0.2/.3) */
 }
 
 .input-error {
-    border-color: var(--error) !important;
+    border-color: #e74c3c !important;
 }
 
-/* ==========================================================
-   PASSWORD INPUT WRAPPER
-   ========================================================== */
-
+/* ----------------------------------------------------------
+   PASSWORD WRAPPER  — mirrors .modal-body .input-group
+   ---------------------------------------------------------- */
 .input-wrapper {
     position: relative;
 }
@@ -193,42 +236,49 @@ body.auth-page {
     background: none;
     border: none;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.5);
-    transition: color var(--transition);
+    color: var(--text-color);
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
     padding: 4px;
-    font-size: 16px;
     display: flex;
     align-items: center;
+    font-size: 16px;
 }
 
 .toggle-password:hover {
-    color: #fff;
+    opacity: 1;
 }
 
-/* ==========================================================
-   FIELD MESSAGES
-   ========================================================== */
-
+/* ----------------------------------------------------------
+   FIELD MESSAGES  — mirrors .invalid-feedback / .valid-feedback
+   ---------------------------------------------------------- */
 .field-error {
     display: block;
     margin-top: 6px;
-    color: var(--error);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     font-weight: 500;
+    color: #E50914;
+}
+
+body.dark-mode .field-error {
+    color: #ff6b6b;
 }
 
 .field-success {
     display: block;
     margin-top: 6px;
-    color: var(--success);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     font-weight: 500;
+    color: #22c55e;
 }
 
-/* ==========================================================
-   PASSWORD STRENGTH
-   ========================================================== */
+body.dark-mode .field-success {
+    color: #51cf66;
+}
 
+/* ----------------------------------------------------------
+   PASSWORD STRENGTH BAR
+   ---------------------------------------------------------- */
 .strength-bar-wrapper {
     display: flex;
     align-items: center;
@@ -238,8 +288,8 @@ body.auth-page {
 
 .strength-bar {
     flex: 1;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.08);
+    height: 5px;
+    background: var(--border-color);
     border-radius: 10px;
     overflow: hidden;
 }
@@ -255,22 +305,25 @@ body.auth-page {
     font-weight: 600;
 }
 
-/* ==========================================================
+/* ----------------------------------------------------------
    ALERTS
-   ========================================================== */
-
+   ---------------------------------------------------------- */
 .alert {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 14px 16px;
-    border-radius: var(--radius-input);
+    border-radius: 10px;
     margin-bottom: 20px;
 }
 
 .alert-success {
     background: rgba(46, 204, 113, 0.1);
     border: 1px solid rgba(46, 204, 113, 0.2);
+    color: #16a34a;
+}
+
+body.dark-mode .alert-success {
     color: #8df0b3;
 }
 
@@ -278,153 +331,110 @@ body.auth-page {
     font-size: 18px;
 }
 
-/* ==========================================================
-   FOOTER — stacked full-width buttons (matches modal-footer)
-   ========================================================== */
-
+/* ----------------------------------------------------------
+   FOOTER BUTTONS  — mirrors .modal-footer.profile-footer
+   Uses .btn-brand from style.css for automatic light/dark
+   ---------------------------------------------------------- */
 .auth-footer-btns {
-    padding: 0 32px 28px;
+    padding: 16px 32px 24px;
+    border-top: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     gap: 12px;
     position: relative;
     z-index: 1;
+    transition: border-color 0.3s;
 }
 
-/* Base button — transparent with border + gradient text */
-.btn {
+/* Reuse .btn-brand from style.css exactly — just make it full-width */
+.auth-footer-btns .btn-brand {
+    width: 100%;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    width: 100%;
-    height: 46px;
-    border-radius: var(--radius-btn);
     font-size: 0.95rem;
     font-weight: 700;
-    cursor: pointer;
+    border-radius: 8px;
     text-decoration: none;
-    transition: all var(--transition-spring);
-
-    /* Gradient text — red→grey→white like profile-panel .profile-btn */
-    background-color: transparent !important;
-    border: 2px solid var(--btn-border) !important;
-
-    background-image: linear-gradient(90deg, #E50914 0%, #444 50%, #ffffff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    cursor: pointer;
 }
 
-.btn:hover {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border-color: #8a8a8a !important;
-    transform: translateY(-2px);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-.btn:focus {
-    box-shadow: none;
-    outline: none;
-}
-
-/* Primary submit button — same style, slightly brighter border */
-.btn-primary {
-    border-color: #7a7575 !important;
-}
-
-.btn-full {
-    width: 100%;
-}
-
-.btn-icon {
-    font-size: 16px;
-}
-
-/* ==========================================================
+/* ----------------------------------------------------------
    BACK LINK
-   ========================================================== */
-
+   ---------------------------------------------------------- */
 .auth-footer {
     text-align: center;
-    padding: 0 32px 24px;
+    padding: 0 32px 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .back-link {
-    color: var(--text-muted);
+    color: var(--text-color);
+    opacity: 0.6;
     text-decoration: none;
-    font-size: 0.88rem;
-    transition: color var(--transition);
+    font-size: 0.9rem;
+    transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .back-link:hover {
-    color: var(--primary);
+    opacity: 1;
+    color: var(--brand-color);
 }
 
-/* ==========================================================
-   RESULT CARDS (Success / Error pages)
-   ========================================================== */
-
-.result-card {
-    text-align: center;
-}
-
+/* ----------------------------------------------------------
+   RESULT CARDS — Success / Error
+   ---------------------------------------------------------- */
 .result-card .auth-body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 36px;
+    text-align: center;
+    padding-top: 40px;
     padding-bottom: 8px;
 }
 
+/* mirrors .success-icon from profile-panel.css */
 .result-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 36px;
-    animation: scaleIn 0.3s var(--transition-spring);
+    font-size: 32px;
+    animation: scaleIn 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 .success-icon {
-    background: rgba(46, 204, 113, 0.12);
-    border: 1px solid rgba(46, 204, 113, 0.3);
-    color: var(--success);
+    background: linear-gradient(135deg, #E50914 0%, #c40812 100%);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(229, 9, 20, 0.25);
 }
 
 .error-icon {
     background: rgba(229, 9, 20, 0.1);
     border: 1px solid rgba(229, 9, 20, 0.25);
-    color: var(--primary);
+    color: var(--brand-color);
 }
 
 .movie-overview {
-    color: var(--text-muted);
+    color: var(--text-color);
+    opacity: 0.7;
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 4px;
+    transition: color 0.3s;
 }
 
-/* ==========================================================
+/* ----------------------------------------------------------
    ANIMATIONS
-   ========================================================== */
-
+   ---------------------------------------------------------- */
 @keyframes authCardIn {
-    from {
-        opacity: 0;
-        transform: translateY(18px) scale(0.97);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(18px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes scaleIn {
@@ -432,53 +442,26 @@ body.auth-page {
     to   { opacity: 1; transform: scale(1); }
 }
 
-/* ==========================================================
+/* ----------------------------------------------------------
    MOBILE
-   ========================================================== */
-
+   ---------------------------------------------------------- */
 @media (max-width: 576px) {
-    .auth-header {
-        padding: 28px 20px 20px;
-        min-height: 100px;
-    }
-
-    .auth-body {
-        padding: 20px 20px;
-    }
-
-    .auth-footer-btns {
-        padding: 0 20px 24px;
-    }
-
-    .auth-footer {
-        padding: 0 20px 20px;
-    }
-
-    .login-title {
-        font-size: 1.3rem;
-    }
+    .auth-header   { padding: 20px; min-height: 100px; }
+    .auth-body     { padding: 20px; }
+    .auth-footer-btns { padding: 16px 20px 20px; }
+    .auth-footer   { padding: 0 20px 16px; }
 
     .auth-avatar {
-        width: 58px;
-        height: 58px;
+        width: 56px;
+        height: 56px;
         font-size: 22px;
-        top: 16px;
-        right: 16px;
+        top: 14px;
+        right: 14px;
+    }
+
+    .result-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 26px;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
